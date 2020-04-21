@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="assets/Airshare.svg" alt="Airshare" width="100">
+  <img src="https://raw.githubusercontent.com/KuroLabs/Airshare/master/assets/Airshare.svg" alt="Airshare" width="100">
   <br>
   <br>
   <span>Airshare</span>
@@ -103,7 +103,7 @@ Options:
 
   For Windows,
 
-  <kbd>Shift</kbd> + <img src="assets/RightClick.svg" width="20">  and select  <kbd>Copy as Path</kbd>
+  <kbd>Shift</kbd> + <img src="https://raw.githubusercontent.com/KuroLabs/Airshare/master/assets/RightClick.svg" width="20">  and select  <kbd>Copy as Path</kbd>
 
   For Linux,
 
@@ -135,7 +135,7 @@ Options:
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-[MIT](https://github.com/KuroLabs/Airshare/blob/master/LICENSE.md) - Copyright (c) 2020 Kandavel A, Mohanasundar M, Nanda H Krishna
+[MIT](https://github.com/KuroLabs/Airshare/blob/master/LICENSE.md) - Copyright (c) 2020 [Kandavel A](http://github.com/AK5123), [Mohanasundar M](https://github.com/mohanpierce99), [Nanda H Krishna](https://github.com/nandahkrishna)
 
 ## Acknowledgements
 The Airshare logo was designed by [Siddique](https://dribbble.com/thesideeq).

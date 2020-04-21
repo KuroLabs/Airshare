@@ -6,8 +6,8 @@ with open("README.md", "r") as f:
 setuptools.setup(
     name="Airshare",
     version="0.0.1",
-    author="Kandavel A <kanduarul@gmail>, Mohanasundar M <itsmohanpierce@gmail.com>, Nanda H Krishna <nanda.harishankar@gmail.com>",
-    author_email="nanda.harishankar@gmail.com",
+    author="Kandavel A, Mohanasundar M, Nanda H Krishna",
+    author_email="kurolabs.org+airshare@gmail.com",
     description="An easy way to share content in a local network.",
     long_description=long_description,
     long_description_content_type="text/markdown",
