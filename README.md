@@ -99,15 +99,15 @@ Options:
 
   For Mac,
 
-  <kbd style='font-size:20px;padding:8px'>⌘</kbd> + <kbd style='font-size:20px;padding:8px'>⌥</kbd> + <kbd style='font-size:12px;padding:8px'>C</kbd>
+  <kbd>Command</kbd> + <kbd>Option</kbd> + <kbd>C</kbd>
 
   For Windows,
 
-  <kbd style='font-size:20px;padding:8px'>⇧</kbd> + <img src="assets/RightClick.svg" width="20">  and select  <kbd style='font-size:14px;padding:8px'>Copy as Path</kbd>
+  <kbd>Shift</kbd> + <img src="assets/RightClick.svg" width="20">  and select  <kbd>Copy as Path</kbd>
 
   For Linux,
 
-  <kbd style='font-size:14px;padding:8px'>Ctrl</kbd> + <kbd style='font-size:12px;padding:8px'>C</kbd>
+  <kbd>Ctrl</kbd> + <kbd>C</kbd>
 
   To send the files,
 
