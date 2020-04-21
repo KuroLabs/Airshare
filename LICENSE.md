@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 Kandavel A, Mohanasundar M and Nanda H Krishna
+Copyright (c) 2020 Kandavel A, Mohanasundar M, Nanda H Krishna
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

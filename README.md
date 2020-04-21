@@ -3,7 +3,7 @@
   <img src="assets/Airshare.svg" alt="Airshare" width="100">
   <br>
   <br>
-  <span style="padding-right:8px">Airshare</span>
+  <span>Airshare</span>
   <br>
   <br>
 </h1>
@@ -135,4 +135,7 @@ Options:
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://github.com/KuroLabs/Airshare/blob/master/LICENSE.md) - Copyright (c) 2020 Kandavel A, Mohanasundar M, Nanda H Krishna
+
+## Acknowledgements
+The Airshare logo was designed by [Siddique](https://dribbble.com/thesideeq).
