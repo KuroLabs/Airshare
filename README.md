@@ -17,7 +17,7 @@
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Airshare.
 
 ```bash
-pip install airshare
+pip install Airshare
 ```
 
 ## Example
@@ -128,7 +128,7 @@ Options:
   To receive,
 
   ```bash
-  airshare -cs noobmaster
+  airshare -cr noobmaster
   ```
 
 ## Contributing
