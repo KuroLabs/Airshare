@@ -7,8 +7,10 @@ import humanize
 import magic
 from multiprocessing import Process
 import os
+import platform
 import pyqrcode
 import requests
+from requests_toolbelt import MultipartEncoder
 import socket
 import tempfile
 from time import sleep, strftime
@@ -139,8 +141,9 @@ def send(*, code, file, compress=False):
     if airshare_type.text != "Upload Receiver":
         print("The airshare `" + code + ".local` is not an upload receiver!")
         return 1
-    file_form = {"upload_file": (name, open(file, "rb"))}
-    requests.post(url + "/upload", files=file_form)
+    m = MultipartEncoder(fields={"field0": (name, open(file, "rb"))})
+    headers = {"content-type": m.content_type}
+    requests.post(url + "/upload", data=m, headers=headers)
     print("Uploaded `" + name + "` to airshare `" + code + ".local`!")
     return 0
 
@@ -224,11 +227,13 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     url_port = ""
     if port != 80:
         url_port = ":" + str(port)
-    ip = socket.inet_ntoa(info.addresses[0])
-    print("`" + content + "`" + file_size + "available at " + ip + url_port
+    ip = socket.inet_ntoa(info.addresses[0]) + url_port
+    print("`" + content + "`" + file_size + "available at " + ip
           + " and `http://" + code + ".local" + url_port + "`, press CtrlC"
           + " to stop sharing...")
-    print(pyqrcode.create("http://" + ip + url_port).terminal(quiet_zone=1))
+    if platform.system() != "Windows":
+        print(pyqrcode.create("http://" + ip + url_port)
+                      .terminal(quiet_zone=1))
     loop.run_forever()
 
 

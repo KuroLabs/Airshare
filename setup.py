@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="Airshare",
-    version="0.0.3",
+    version="0.0.4",
     author="Kandavel A, Mohanasundar M, Nanda H Krishna",
     author_email="kurolabs.org+airshare@gmail.com",
     description="An easy way to share content in a local network.",
@@ -31,14 +31,15 @@ setuptools.setup(
     install_requires=[
         "aiohttp >= 3.6.2",
         "asyncio >= 3.4.3",
+        "click >= 7.0",
         "humanize >= 0.5.1",
-        "python-magic >= 0.4.15",
-        "pyqrcode >= 1.2.1",
-        "requests >= 2.20.0",
-        "zeroconf >= 0.25.0",
-        "tqdm >= 4.36.1",
         "pyperclip >= 1.8.0",
-        "click >= 7.0" ,
+        "pyqrcode >= 1.2.1",
+        "python-magic-bin == 0.4.14",
+        "requests >= 2.20.0",
+        "requests-toolbelt >= 0.9.1",
+        "tqdm >= 4.36.1",
+        "zeroconf >= 0.25.0",
     ],
     python_requires=">=3.6",
 )

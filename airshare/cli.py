@@ -11,7 +11,7 @@ from .sender import send, send_server
 from .receiver import receive, receive_server
 
 
-@click.command()
+@click.command(name="airshare")
 @click.argument("code", nargs=1)
 @click.option("-p", "--port", type=int, default=80, help="""
 Specify the port number to host a sending or receiving server (defaults to 80).
@@ -32,9 +32,10 @@ Receive served content and also copy into clipboard (if possible).
 Send files whose paths have been copied to the clipoard.
 """)
 @click.argument("files", nargs=-1)
-@click.help_option("-h", "--help", help="""
+@click.help_option(help="""
 Show this message and exit. For more detailed instructions, use `man airshare`.
 """)
+@click.version_option(version=None, prog_name="Airshare")
 def main(code, port, text, upload, clip_send, clip_receive, file_path, files):
     r"""Airshare - an easy way to share content in a local network.
 
@@ -84,4 +85,4 @@ def main(code, port, text, upload, clip_send, clip_receive, file_path, files):
 
 
 if __name__ == "__main__":
-    main(prog_name="airshare")
+    main(prog_name="Airshare")

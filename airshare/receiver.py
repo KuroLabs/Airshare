@@ -6,6 +6,7 @@ import asyncio
 import humanize
 from multiprocessing import Process
 import os
+import platform
 import pyqrcode
 import requests
 import socket
@@ -62,7 +63,9 @@ async def _uploaded_file_receiver(request):
             f.write(chunk)
             file_size += len(chunk)
     desc = "Downloading `" + file_name + "`"
-    tqdm(desc=desc, initial=file_size, total=file_size, unit="B", unit_scale=1)
+    format = "{l_bar} {bar}| {n_fmt}/{total_fmt}"
+    tqdm(desc=desc, initial=file_size, total=file_size, unit="B", unit_scale=1,
+         bar_format=format)
     if is_zipfile(file_path) and request.app["decompress"] == "True":
         zip_dir = unzip_file(file_path)
         print("Decompressed to `" + zip_dir + "`!")
@@ -165,10 +168,11 @@ def receive_server(*, code, decompress=False, port=80):
     url_port = ""
     if port != 80:
         url_port = ":" + str(port)
-    ip = socket.inet_ntoa(info.addresses[0])
-    print("Waiting for uploaded files at " + ip + url_port + " and `http://"
+    ip = socket.inet_ntoa(info.addresses[0]) + url_port
+    print("Waiting for uploaded files at " + ip + " and `http://"
           + code + ".local" + url_port + "`, press CtrlC to stop receiving...")
-    print(pyqrcode.create("http://" + ip + url_port).terminal(quiet_zone=1))
+    if platform.system() != "Windows":
+        print(pyqrcode.create("http://" + ip).terminal(quiet_zone=1))
     loop.run_forever()
 
 
