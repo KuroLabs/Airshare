@@ -1,4 +1,5 @@
 import setuptools
+import sys
 
 with open("README.md", "r") as f:
     long_description = f.read()
@@ -12,12 +13,13 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/KuroLabs/airshare",
-    entry_points = {
+    entry_points={
         "console_scripts": ["airshare=airshare.cli:main"],
     },
     packages=[
         "airshare",
     ],
+    include_package_data=True,
     classifiers=[
         "Environment :: Console",
         "License :: OSI Approved :: MIT License",
@@ -26,7 +28,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Topic :: System :: Networking",
-        "Topic :: Utilities", 
+        "Topic :: Utilities",
     ],
     install_requires=[
         "aiohttp >= 3.6.2",
@@ -35,11 +37,11 @@ setuptools.setup(
         "humanize >= 0.5.1",
         "pyperclip >= 1.8.0",
         "pyqrcode >= 1.2.1",
-        "python-magic-bin == 0.4.14",
+        "python-magic == 0.4.15",
         "requests >= 2.20.0",
         "requests-toolbelt >= 0.9.1",
         "tqdm >= 4.36.1",
         "zeroconf >= 0.25.0",
-    ],
+    ] + ["python-magic-bin == 0.4.14"] if "win" in sys.platform else [],
     python_requires=">=3.6",
 )

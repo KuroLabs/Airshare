@@ -1,4 +1,4 @@
-"""Module for receiving data and hosting rceeiving servers."""
+"""Module for receiving data and hosting receiving servers."""
 
 
 from aiohttp import web
@@ -6,6 +6,7 @@ import asyncio
 import humanize
 from multiprocessing import Process
 import os
+import pkgutil
 import platform
 import pyqrcode
 import requests
@@ -22,53 +23,43 @@ from .utils import file_stream_receiver, get_local_ip_address, unzip_file
 __all__ = ["receive", "receive_server", "receive_server_proc"]
 
 
+_tqdm_position = -1
+
+
 # Request handlers
 
 
 async def _upload_page(request):
     """Renders an upload page. GET handler for route '/'."""
-    return web.Response(text="""
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-        <title>Airshare Upload</title>
-        </head>
-        <body>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input name="file-input" type="file"/>
-            <input type="submit" value="Upload"/>
-        </form>
-        </body>
-        </html>
-    """, content_type="text/html")
+    upload = pkgutil.get_data(__name__, "static/upload.html").decode()
+    return web.Response(text=upload, content_type="text/html")
 
 
 async def _uploaded_file_receiver(request):
     """Receives an uploaded file. POST handler for '/upload'."""
+    global _tqdm_position
+    _tqdm_position += 1
     reader = await request.multipart()
     field = await reader.next()
     file_name = field.filename
     file_path = os.getcwd() + os.path.sep + file_name
-    file_size = 0
+    file_size = int(request.headers["content-length"])
     if os.path.isfile(file_path):
         file_name, file_ext = os.path.splitext(file_name)
         file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
         file_path = os.getcwd() + os.path.sep + file_name
+    desc = "Downloading `" + file_name + "`"
+    bar = tqdm(desc=desc, total=file_size, unit="B", unit_scale=1,
+               position=_tqdm_position)
     with open(file_path, "wb") as f:
         while True:
             chunk = await field.read_chunk()
             if not chunk:
                 break
             f.write(chunk)
-            file_size += len(chunk)
-    desc = "Downloading `" + file_name + "`"
-    format = "{l_bar} {bar}| {n_fmt}/{total_fmt}"
-    tqdm(desc=desc, initial=file_size, total=file_size, unit="B", unit_scale=1,
-         bar_format=format)
+            bar.update(len(chunk))
     if is_zipfile(file_path) and request.app["decompress"] == "True":
-        zip_dir = unzip_file(file_path)
-        print("Decompressed to `" + zip_dir + "`!")
+        unzip_file(file_path)
         os.remove(file_path)
     file_name = field.filename
     file_size = humanize.naturalsize(file_size)
@@ -120,6 +111,7 @@ def receive(*, code, decompress=False):
     elif airshare_type == "File Sender":
         file_path = file_stream_receiver(url + "/download")
         if is_zipfile(file_path) and decompress:
+            print("Decompressing...")
             zip_dir = unzip_file(file_path)
             print("Decompressed to `" + zip_dir + "`!")
             os.remove(file_path)
@@ -173,6 +165,8 @@ def receive_server(*, code, decompress=False, port=80):
           + code + ".local" + url_port + "`, press CtrlC to stop receiving...")
     if platform.system() != "Windows":
         print(pyqrcode.create("http://" + ip).terminal(quiet_zone=1))
+    if decompress:
+        print("Note: Any Zip Archives will be decompressed!")
     loop.run_forever()
 
 

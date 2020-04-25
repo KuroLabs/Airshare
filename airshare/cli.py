@@ -32,9 +32,7 @@ Receive served content and also copy into clipboard (if possible).
 Send files whose paths have been copied to the clipoard.
 """)
 @click.argument("files", nargs=-1)
-@click.help_option(help="""
-Show this message and exit. For more detailed instructions, use `man airshare`.
-""")
+@click.help_option()
 @click.version_option(version=None, prog_name="Airshare")
 def main(code, port, text, upload, clip_send, clip_receive, file_path, files):
     r"""Airshare - an easy way to share content in a local network.

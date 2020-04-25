@@ -1,0 +1,29 @@
+Usage: airshare [OPTIONS] CODE [FILES]
+
+  Airshare - an easy way to share content in a local network.
+
+  CODE - An identifying code for Airshare.
+
+  FILES - File(s) or directories to send.
+
+Options:
+
+  -p, --port INTEGER   Specify the port number to host a sending or receiving
+                       server (defaults to 80).
+ 
+  -t, --text TEXT      Send (serve) text content. For multiple words, enclose
+                       within quotes.
+    
+  -u, --upload         Host a receiving server or upload file(s) to one.
+
+  -cs, --clip-send     Send (serve) clipboard contents as text.
+
+  -cr, --clip-receive  Receive served content and also copy into clipboard (if
+                       possible).
+
+  -fp, --file-path     Send files whose paths have been copied to the
+                       clipoard.
+
+  --help               Show this message and exit.
+
+  --version            Show the version and exit.

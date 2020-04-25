@@ -134,9 +134,7 @@ def file_stream_receiver(url):
             file_path = os.getcwd() + os.path.sep + file_name
         with open(file_path, "wb") as f:
             desc = "Downloading `" + file_name + "`"
-            format = "{l_bar} {bar}| {n_fmt}/{total_fmt}"
-            bar = tqdm(desc=desc, total=file_size, unit="B", unit_scale=1,
-                       bar_format=format)
+            bar = tqdm(desc=desc, total=file_size, unit="B", unit_scale=1)
             for chunk in r.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)

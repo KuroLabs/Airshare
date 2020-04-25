@@ -132,7 +132,9 @@ def send(*, code, file, compress=False):
     if file is None:
         raise ValueError("The parameter `file` must be non-empty!")
     if compress or len(file) > 1 or os.path.isdir(file[0]):
+        print("Compressing...")
         file, name = get_zip_file(file)
+        print("Compressed to `" + name + "`!")
     else:
         file, name = file[0], file[0].split(os.path.sep)[-1]
     ip = socket.inet_ntoa(info.addresses[0])
@@ -191,7 +193,9 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
                          + " given and non-empty!")
     elif text is None and file is not None:
         if compress or len(file) > 1 or os.path.isdir(file[0]):
+            print("Compressing...")
             content, name = get_zip_file(file)
+            print("Compressed to `" + name + "`!")
         else:
             content = file[0]
     addresses = [get_local_ip_address()]
