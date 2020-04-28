@@ -17,10 +17,10 @@
 
 ## Important Links
 
-Source Code: https://github.com/KuroLabs/Airshare
-Bug Reports: https://github.com/KuroLabs/Airshare/issues
-Documentation: https://airshare.rtfd.io
-PyPI: https://pypi.org/project/Airshare
+Source Code: https://github.com/KuroLabs/Airshare <br>
+Bug Reports: https://github.com/KuroLabs/Airshare/issues <br>
+Documentation: https://airshare.rtfd.io <br>
+PyPI: https://pypi.org/project/Airshare <br>
 
 ## Installation
 
@@ -54,8 +54,6 @@ You can also `import airshare` in any Python program. Visit the documentation fo
 * The QR Code feature is not available on Windows. Terminals on Windows are unable to render QR Codes despite our extensive attempts and tests - let us know if you have a solution!
 
 * Link-local Name Resolution, for example, `http://noobmaster.local`, does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery.
-
-* Non-Apple devices may require Avahi (on Linux) or Bonjour (on Windows) for Link-local Name Resolution.
 
 * Multiple progress bars for concurrent file uploads using `tqdm` may not work as intended on some terminals, refer to the `tqdm` documentation for more details.
 
