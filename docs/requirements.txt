@@ -1,2 +1,14 @@
+aiohttp==3.6.2
+asyncio==3.4.3
+click==7.0
+humanize==0.5.1
+pyperclip==1.8.0
+pyqrcode==1.2.1
+python-magic==0.4.15
+requests==2.20.0
+requests-toolbelt==0.9.1
+tqdm==4.36.1
+zeroconf==0.25.0
+python-magic-bin==0.4.14 ; sys_platform=='win32' or sys_platform=='darwin'
 sphinxcontrib-fulltoc==1.2.0
 python-docs-theme==2020.1
