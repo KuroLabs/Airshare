@@ -1,0 +1,10 @@
+import airshare
+
+# Host a sending server (as a process, non-blocking code)
+process = airshare.sender.send_server_process(code="noobmaster", text="Hi!")
+# You can later terminate this process using `process.terminate()`
+
+# Receive from an Airshare server
+text = airshare.receiver.receive(code="noobmaster")
+
+# Refer to the module documentation for more details

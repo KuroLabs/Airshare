@@ -1,6 +1,22 @@
 Airshare Module
 ===============
 
+airshare.cli module
+-------------------
+
+.. automodule:: airshare.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+airshare.exception module
+-------------------------
+
+.. automodule:: airshare.exception
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 airshare.receiver module
 ------------------------
 

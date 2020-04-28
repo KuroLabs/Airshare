@@ -27,7 +27,7 @@ PyPI: https://pypi.org/project/Airshare
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Airshare.
 
 ```bash
-pip install Airshare
+$ pip install Airshare
 ```
 
 ## Example
@@ -37,12 +37,12 @@ Send and receive files and directories.
 To send using the CLI,
 
 ```bash
-airshare noobmaster requirements.txt
+$ airshare noobmaster requirements.txt
 ```
 To receive using the CLI,
 
 ```bash
-airshare noobmaster
+$ airshare noobmaster
 ```
 
 or visit `http://noobmaster.local` in the browser to download.

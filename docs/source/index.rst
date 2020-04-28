@@ -53,7 +53,7 @@ install Airshare.
 
 .. code:: bash
 
-   pip install Airshare
+   $ pip install Airshare
 
 CLI Tool Reference
 ------------------

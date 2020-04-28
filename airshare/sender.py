@@ -7,6 +7,7 @@ import humanize
 import magic
 from multiprocessing import Process
 import os
+import pkgutil
 import platform
 import pyqrcode
 import requests
@@ -14,11 +15,12 @@ from requests_toolbelt import MultipartEncoder
 import socket
 import tempfile
 from time import sleep, strftime
-from zeroconf import IPVersion, ServiceInfo, Zeroconf
 from zipfile import ZipFile
 
 
-from .utils import get_local_ip_address, get_zip_file
+from .exception import CodeExistsError, CodeNotFoundError, IsNotReceiverError
+from .utils import get_local_ip_address, get_service_info, get_zip_file, \
+    register_service
 
 
 __all__ = ["send", "send_server", "send_server_proc"]
@@ -40,22 +42,10 @@ async def _text_sender(request):
 
 async def _download_page(request):
     """Renders a download page, GET handler for route '/'."""
+    download = pkgutil.get_data(__name__, "static/download.html").decode()
     file_name = request.app["file_name"]
     file_size = humanize.naturalsize(request.app["file_size"])
-    return web.Response(text="""
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-        <title>Airshare Download</title>
-        </head>
-        <body>
-        <form action="/download" method="get">
-            <input type="submit" value="Download {} ({})"/>
-        </form>
-        </body>
-        </html>
-    """.format(file_name, file_size), content_type="text/html")
+    return web.Response(text=download, content_type="text/html")
 
 
 async def _file_stream_sender(request):
@@ -113,15 +103,12 @@ def send(*, code, file, compress=False):
 
     Returns
     -------
-    Returns 0 if successful.
-    Returns 1 on failure.
+    status_code : int
+        Status code of upload POST request.
     """
-    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
-    service = "_airshare._http._tcp.local."
-    info = zeroconf.get_service_info(service, code + service)
+    info = get_service_info(code)
     if info is None:
-        print("The airshare `" + code + ".local` does not exist!")
-        return 1
+        raise CodeNotFoundError(code)
     if type(file) is str:
         if file == "":
             file = None
@@ -141,13 +128,12 @@ def send(*, code, file, compress=False):
     url = "http://" + ip + ":" + str(info.port)
     airshare_type = requests.get(url + "/airshare")
     if airshare_type.text != "Upload Receiver":
-        print("The airshare `" + code + ".local` is not an upload receiver!")
-        return 1
+        raise IsNotReceiverError(code)
     m = MultipartEncoder(fields={"field0": (name, open(file, "rb"))})
     headers = {"content-type": m.content_type}
-    requests.post(url + "/upload", data=m, headers=headers)
+    r = requests.post(url + "/upload", data=m, headers=headers)
     print("Uploaded `" + name + "` to airshare `" + code + ".local`!")
-    return 0
+    return r.status_code
 
 
 def send_server(*, code, text=None, file=None, compress=False, port=80):
@@ -172,12 +158,9 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     port : int, default=80
         Port number at which the server is hosted on the device.
     """
-    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
-    service = "_airshare._http._tcp.local."
-    info = zeroconf.get_service_info(service, code + service)
+    info = get_service_info(code)
     if info is not None:
-        raise ValueError("`" + code
-                         + "` already exists, please use a different code!")
+        raise CodeExistsError(code)
     if file is not None:
         if type(file) is str:
             if file == "":
@@ -199,14 +182,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
         else:
             content = file[0]
     addresses = [get_local_ip_address()]
-    info = ServiceInfo(
-        service,
-        code + service,
-        addresses=addresses,
-        port=port,
-        server=code + ".local."
-    )
-    zeroconf.register_service(info)
+    register_service(code, addresses, port)
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     app = web.Application()
@@ -231,7 +207,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     url_port = ""
     if port != 80:
         url_port = ":" + str(port)
-    ip = socket.inet_ntoa(info.addresses[0]) + url_port
+    ip = socket.inet_ntoa(addresses[0]) + url_port
     print("`" + content + "`" + file_size + "available at " + ip
           + " and `http://" + code + ".local" + url_port + "`, press CtrlC"
           + " to stop sharing...")

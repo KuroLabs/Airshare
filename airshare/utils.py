@@ -11,10 +11,12 @@ import tempfile
 from time import strftime
 from tqdm import tqdm
 from zipfile import ZipFile
+from zeroconf import IPVersion, ServiceInfo, Zeroconf
 
 
-__all__ = ["get_local_ip_address", "get_zip_file", "unzip_file",
-           "file_stream_receiver", "get_clipboard_paths", "is_file_copyable"]
+__all__ = ["get_local_ip_address", "get_service_info", "register_service",
+           "get_zip_file", "unzip_file", "get_clipboard_paths",
+           "is_file_copyable"]
 
 
 # Local IP Address
@@ -34,6 +36,57 @@ def get_local_ip_address():
     s.close()
     ip = socket.inet_aton(ip)
     return ip
+
+
+# Zeroconf Utilities
+
+def get_service_info(code):
+    r"""Get service information for an Airshare service.
+
+    Parameters
+    ----------
+    code : str
+        Identifying code for the Airshare service.
+
+    Returns
+    -------
+    info : zeroconf.ServiceInfo
+        Details of the Airshare service.
+    """
+    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
+    service = "_airshare._http._tcp.local."
+    info = zeroconf.get_service_info(service, code + service)
+    return info
+
+
+def register_service(code, addresses, port):
+    r"""Registers an Airshare Multicast-DNS service based in the local network.
+
+    Parameters
+    ----------
+    code : str
+        Identifying code for the Airshare service.
+    addresses : list
+        List of local network IP Addresses for the service.
+    port : int
+        Port number for the Airshare service's server.
+
+    Returns
+    -------
+    info : zeroconf.ServiceInfo
+        Details of the Airshare service.
+    """
+    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
+    service = "_airshare._http._tcp.local."
+    info = ServiceInfo(
+        service,
+        code + service,
+        addresses=addresses,
+        port=port,
+        server=code + ".local."
+    )
+    zeroconf.register_service(info)
+    return info
 
 
 # Zip and Unzip
@@ -104,42 +157,6 @@ def unzip_file(zip_file_path):
         zip_archive.extractall(zip_dir)
     zip_dir = os.path.realpath(zip_dir)
     return zip_dir
-
-
-# Stream Receiver
-
-
-def file_stream_receiver(url):
-    r"""Receives content streamed by a sender.
-
-    Parameters
-    ----------
-    url : str
-        The URL of the sender (server) where the content is served.
-
-    Returns
-    -------
-    file_path : str
-        Canonical path of the file received.
-    """
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        header = r.headers["content-disposition"]
-        file_name = header.split("; ")[1].split("=")[1]
-        file_path = os.getcwd() + os.path.sep + file_name
-        file_size = int(header.split("=")[-1])
-        if os.path.isfile(file_path):
-            file_name, file_ext = os.path.splitext(file_name)
-            file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
-            file_path = os.getcwd() + os.path.sep + file_name
-        with open(file_path, "wb") as f:
-            desc = "Downloading `" + file_name + "`"
-            bar = tqdm(desc=desc, total=file_size, unit="B", unit_scale=1)
-            for chunk in r.iter_content(chunk_size=8192):
-                if chunk:
-                    f.write(chunk)
-                    bar.update(len(chunk))
-        return os.path.realpath(file_path)
 
 
 # Clipboard Utilities

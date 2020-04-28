@@ -14,7 +14,7 @@ Flags
 
   .. code:: bash
 
-     airshare noobmaster -t "I'm still worthy!"
+     $ airshare noobmaster -t "I'm still worthy!"
 
 * The ``-u`` flag opens an upload endpoint to receive files from multiple users who initiate a send with the same flag. This is useful to receive files from devices without CLI support - they may simply visit the endpoint URL from any browser.
 
@@ -22,13 +22,13 @@ Flags
 
   .. code:: bash
   
-     airshare -u noobmaster
+     $ airshare -u noobmaster
 
   At the sender,
 
   .. code:: bash
 
-     airshare -u noobmaster file.txt
+     $ airshare -u noobmaster file.txt
 
 * The ``-fp`` flag allows users to copy file or directory paths from the Finder or File Explorer and send them. Useful for selecting multiple files instead of typing file paths.
 
@@ -56,7 +56,7 @@ Flags
 
   .. code:: bash
 
-     airshare -fp noobmaster
+     $ airshare -fp noobmaster
 
 * The ``-cs`` flag allows users to directly send the clipboard contents as text.
 
@@ -64,7 +64,7 @@ Flags
 
   .. code:: bash
 
-     airshare -cs noobmaster
+     $ airshare -cs noobmaster
 
 * The ``-cr`` flag allows users to copy the data received if clipboard compatible. 
 
@@ -72,4 +72,4 @@ Flags
 
   .. code:: bash
 
-     airshare -cr noobmaster
+     $ airshare -cr noobmaster

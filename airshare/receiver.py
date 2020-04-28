@@ -13,11 +13,12 @@ import requests
 import socket
 from time import sleep, strftime
 from tqdm import tqdm
-from zeroconf import IPVersion, ServiceInfo, Zeroconf
 from zipfile import ZipFile, is_zipfile
 
 
-from .utils import file_stream_receiver, get_local_ip_address, unzip_file
+from .exception import CodeExistsError, CodeNotFoundError, IsNotSenderError
+from .utils import get_service_info, get_local_ip_address, register_service, \
+    unzip_file
 
 
 __all__ = ["receive", "receive_server", "receive_server_proc"]
@@ -87,21 +88,17 @@ def receive(*, code, decompress=False):
 
     Returns
     -------
-    Returns the text or path of the file received, if successful.
-    Returns 1 on failure.
+    text (or) file_path : str
+        Returns the text or path of the file received, if successful.
     """
-    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
-    service = "_airshare._http._tcp.local."
-    info = zeroconf.get_service_info(service, code + service)
+    info = get_service_info(code)
     if info is None:
-        print("The airshare `" + code + ".local` does not exist!")
-        return 1
+        raise CodeNotFoundError(code)
     ip = socket.inet_ntoa(info.addresses[0])
     url = "http://" + ip + ":" + str(info.port)
     airshare_type = requests.get(url + "/airshare").text
     if "Sender" not in airshare_type:
-        print("The airshare `" + code + ".local` is not a sender!")
-        return 1
+        raise IsNotSenderError(code)
     print("Receiving from airshare `" + code + ".local`...")
     sleep(2)
     if airshare_type == "Text Sender":
@@ -109,14 +106,31 @@ def receive(*, code, decompress=False):
         print("Received: " + text)
         return text
     elif airshare_type == "File Sender":
-        file_path = file_stream_receiver(url + "/download")
-        if is_zipfile(file_path) and decompress:
-            print("Decompressing...")
-            zip_dir = unzip_file(file_path)
-            print("Decompressed to `" + zip_dir + "`!")
-            os.remove(file_path)
-            file_path = zip_dir
-        return file_path
+        with requests.get(url + "/download", stream=True) as r:
+            r.raise_for_status()
+            header = r.headers["content-disposition"]
+            file_name = header.split("; ")[1].split("=")[1]
+            file_path = os.getcwd() + os.path.sep + file_name
+            file_size = int(header.split("=")[-1])
+            if os.path.isfile(file_path):
+                file_name, file_ext = os.path.splitext(file_name)
+                file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
+                file_path = os.getcwd() + os.path.sep + file_name
+            with open(file_path, "wb") as f:
+                desc = "Downloading `" + file_name + "`"
+                bar = tqdm(desc=desc, total=file_size, unit="B", unit_scale=1)
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+                        bar.update(len(chunk))
+            file_path = os.path.realpath(file_path)
+            if is_zipfile(file_path) and decompress:
+                print("Decompressing...")
+                zip_dir = unzip_file(file_path)
+                print("Decompressed to `" + zip_dir + "`!")
+                os.remove(file_path)
+                file_path = zip_dir
+            return file_path
 
 
 def receive_server(*, code, decompress=False, port=80):
@@ -131,21 +145,11 @@ def receive_server(*, code, decompress=False, port=80):
     port : int, default=80
         Port number at which the server is hosted on the device.
     """
-    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
-    service = "_airshare._http._tcp.local."
-    if zeroconf.get_service_info(service, code + service) is not None:
-        print("`" + code + "` already exists, please use a different code!")
-        return
+    info = get_service_info(code)
+    if info is not None:
+        raise CodeExistsError(code)
     addresses = [get_local_ip_address()]
-    info = ServiceInfo(
-        service,
-        code + service,
-        addresses=addresses,
-        port=port,
-        server=code + ".local."
-    )
-    zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
-    zeroconf.register_service(info)
+    register_service(code, addresses, port)
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     app = web.Application()
@@ -160,7 +164,7 @@ def receive_server(*, code, decompress=False, port=80):
     url_port = ""
     if port != 80:
         url_port = ":" + str(port)
-    ip = socket.inet_ntoa(info.addresses[0]) + url_port
+    ip = socket.inet_ntoa(addresses[0]) + url_port
     print("Waiting for uploaded files at " + ip + " and `http://"
           + code + ".local" + url_port + "`, press CtrlC to stop receiving...")
     if platform.system() != "Windows":
