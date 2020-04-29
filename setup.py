@@ -1,12 +1,12 @@
 import setuptools
 import sys
 
-with open("README.md", "r") as f:
+with open("PIP.md", "r") as f:
     long_description = f.read()
 
 setuptools.setup(
     name="Airshare",
-    version="0.0.4",
+    version="0.1.0",
     author="Kandavel A, Mohanasundar M, Nanda H Krishna",
     author_email="kurolabs.org+airshare@gmail.com",
     description="An easy way to share content in a local network.",

@@ -16,10 +16,20 @@ Airshare
    <br/>
 
 .. image:: https://img.shields.io/pypi/v/Airshare
+   :target: https://pypi.org/project/Airshare
+   :alt: PyPI Version
 
 .. image:: https://img.shields.io/pypi/pyversions/Airshare
+   :target: https://pypi.org/project/Airshare
+   :alt: Python Version Support
 
 .. image:: https://img.shields.io/pypi/l/Airshare
+   :target: https://github.com/KuroLabs/Airshare/blob/master/LICENSE.md
+   :alt: License
+
+.. image:: https://readthedocs.org/projects/airshare/badge/?version=latest
+   :target: https://airshare.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 .. raw:: html
 

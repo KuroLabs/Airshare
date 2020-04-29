@@ -6,18 +6,6 @@
   <span>Airshare</span>
   <br>
   <br>
-  <a href="https://pypi.org/project/Airshare">
-    <img alt="PyPI" src="https://img.shields.io/pypi/v/Airshare" />
-  </a>
-  <a href="https://pypi.org/project/Airshare">
-    <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/Airshare" />
-  </a>
-  <a href="https://github.com/KuroLabs/Airshare/blob/master/LICENSE.md">
-  <img alt="PyPI - License" src="https://img.shields.io/pypi/l/Airshare">
-  </a>
-  <a href="https://airshare.readthedocs.io/en/latest/?badge=latest">
-    <img src="https://readthedocs.org/projects/airshare/badge/?version=latest" alt="Documentation Status" />
-  </a>
 </h1>
 
 <h4 align="center">An easy way to share content in a local network using Multicast DNS.</h4>

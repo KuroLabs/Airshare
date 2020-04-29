@@ -44,26 +44,26 @@ async def _uploaded_file_receiver(request):
     field = await reader.next()
     file_name = field.filename
     file_path = os.getcwd() + os.path.sep + file_name
-    file_size = int(request.headers["content-length"])
     if os.path.isfile(file_path):
         file_name, file_ext = os.path.splitext(file_name)
         file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
         file_path = os.getcwd() + os.path.sep + file_name
     desc = "Downloading `" + file_name + "`"
-    bar = tqdm(desc=desc, total=file_size, unit="B", unit_scale=1,
+    bar = tqdm(desc=desc, total=0, unit="B", unit_scale=1,
                position=_tqdm_position)
     with open(file_path, "wb") as f:
         while True:
             chunk = await field.read_chunk()
             if not chunk:
                 break
+            bar.total += len(chunk)
             f.write(chunk)
             bar.update(len(chunk))
     if is_zipfile(file_path) and request.app["decompress"] == "True":
         unzip_file(file_path)
         os.remove(file_path)
     file_name = field.filename
-    file_size = humanize.naturalsize(file_size)
+    file_size = humanize.naturalsize(bar.total)
     text = "{} ({}) successfully received!".format(file_name, file_size)
     return web.Response(text=text)
 
@@ -99,10 +99,10 @@ def receive(*, code, decompress=False):
     airshare_type = requests.get(url + "/airshare").text
     if "Sender" not in airshare_type:
         raise IsNotSenderError(code)
-    print("Receiving from airshare `" + code + ".local`...")
+    print("Receiving from Airshare `" + code + ".local`...")
     sleep(2)
     if airshare_type == "Text Sender":
-        text = requests.get(url).text
+        text = requests.get(url + "/text").text
         print("Received: " + text)
         return text
     elif airshare_type == "File Sender":

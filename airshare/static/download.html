@@ -5,25 +5,24 @@
 <meta name="Airshare Download" content="width=device-width, initial-scale=1.0">
 <title>Airshare Download</title>
 <style>
-h1 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 36px; font-style: normal; font-variant: normal; font-weight: 800; line-height: 26.4px; } h3 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } blockquote { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } pre { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5714px; }
 .rocket-button {
-  --background: #262730;
+  --background: #450063;
   --text: #fff;
-  --check: #5c86ff;
-  --blue: #5c86ff;
-  --blue-transparent: rgba(92, 134, 255, 0);
-  --dot: #fe5151;
-  --dot-shadow: rgba(254, 81, 81, 0.3);
+  --check: #1da1f2;
+  --blue: #1da1f2;
+  --blue-transparent: rgba(29, 161, 242, 0);
+  --dot: #1da1f2;
+  --dot-shadow: rgba(29, 161, 242, 0.3);
   --smoke: rgba(247, 248, 255, 0.9);
   --rocket: #eef0fd;
   --rocket-shadow-left: #fff;
   --rocket-shadow-right: #d3d4ec;
   --rocket-wing-right: #c2c3d9;
   --rocket-wing-left: #d3d4ec;
-  --rocket-window: #275efe;
+  --rocket-window: #1da1f2;
   --rocket-window-shadow: #c2c3d9;
   --rocket-line: #9ea0be;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 21px;
   padding: 16px 40px;
@@ -96,7 +95,7 @@ h1 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 36p
   position: absolute;
   display: -webkit-box;
   display: flex;
-  top: 14px;
+  top: 16px;
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
@@ -420,7 +419,6 @@ html {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
 }
- 
 * {
   box-sizing: inherit;
 }
@@ -432,12 +430,21 @@ body {
   display: -webkit-box;
   display: flex;
   flex-direction: column;
-  font-family: 'Roboto', Arial;
+  font-family: 'Roboto', "Open Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 36px;
   -webkit-box-pack: center;
           justify-content: center;
   -webkit-box-align: center;
           align-items: center;
   background: #F7F8FF;
+  text-rendering: optimizeLegibility;
+}
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 36px;
 }
 body .dribbble {
   position: fixed;
@@ -454,13 +461,13 @@ body .dribbble img {
 <body>
 <br>
 <div style="display: flex;">
-    <h1 style="text-align: center;">Airshare</h1>
-    <div style="width:19px"></div>
-    <svg width="40" height="40" style="margin-top:16px" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 38.5H1.5V20C1.5 9.78273 9.78273 1.5 20 1.5C30.2173 1.5 38.5 9.78273 38.5 20C38.5 30.2173 30.2173 38.5 20 38.5Z" stroke="#450063" stroke-width="3"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M23.9929 31.8899C24.3465 31.8902 24.6492 31.6365 24.7106 31.2882C25.5639 26.8299 24.1571 22.238 20.9529 19.0227C17.744 15.793 13.1341 14.3792 8.66624 15.2544C8.38788 15.2819 8.14891 15.4642 8.04888 15.7254C7.94885 15.9867 8.00489 16.282 8.19367 16.4884C8.38246 16.6948 8.67159 16.7769 8.94069 16.7005C12.9259 15.9251 17.0354 17.1881 19.8973 20.0677C22.7775 22.9304 24.0541 27.033 23.3068 31.0244C23.2697 31.2176 23.3113 31.4177 23.4223 31.5801C23.5333 31.7426 23.7044 31.8541 23.8979 31.8899H23.9929ZM17.2268 22.7488C19.4848 25.0097 20.2732 28.3515 19.264 31.3832C19.1712 31.6666 18.9174 31.8664 18.6201 31.8899C18.5435 31.905 18.4646 31.905 18.3879 31.8899C18.0007 31.7641 17.7882 31.3486 17.9129 30.961C18.7778 28.4561 18.1419 25.6771 16.2736 23.7976C14.4053 21.9181 11.6303 21.2655 9.12013 22.1155C8.72976 22.2408 8.3112 22.0291 8.18068 21.6405C8.05604 21.2529 8.26846 20.8375 8.65569 20.7116C11.6677 19.7055 14.9896 20.4951 17.2268 22.7488ZM8.30825 29.9347C7.81859 28.7522 8.08897 27.3911 8.99346 26.4855C10.2412 25.3229 12.1855 25.3572 13.3914 26.5631C14.5973 27.769 14.6316 29.7134 13.469 30.961C12.8757 31.5551 12.0708 31.8892 11.2312 31.8899C9.95131 31.8889 8.7979 31.1173 8.30825 29.9347ZM10.3057 30.1177C10.9696 30.5639 11.8562 30.4796 12.424 29.916C12.7419 29.6006 12.9205 29.1711 12.9201 28.7232C12.9194 27.9233 12.3542 27.235 11.5697 27.0788C10.7852 26.9225 9.99936 27.3416 9.69216 28.0802C9.38495 28.8189 9.64172 29.6716 10.3057 30.1177Z" fill="#1DA1F2"/>
-    </svg>
-    <br>    
+  <h1 style="text-align: center; justify-content: center;">Airshare</h1>
+  <div style="width: 16px"></div>
+  <svg width="40" height="40" style="margin-top: 16px" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 38.5H1.5V20C1.5 9.78273 9.78273 1.5 20 1.5C30.2173 1.5 38.5 9.78273 38.5 20C38.5 30.2173 30.2173 38.5 20 38.5Z" stroke="#450063" stroke-width="3"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M23.9929 31.8899C24.3465 31.8902 24.6492 31.6365 24.7106 31.2882C25.5639 26.8299 24.1571 22.238 20.9529 19.0227C17.744 15.793 13.1341 14.3792 8.66624 15.2544C8.38788 15.2819 8.14891 15.4642 8.04888 15.7254C7.94885 15.9867 8.00489 16.282 8.19367 16.4884C8.38246 16.6948 8.67159 16.7769 8.94069 16.7005C12.9259 15.9251 17.0354 17.1881 19.8973 20.0677C22.7775 22.9304 24.0541 27.033 23.3068 31.0244C23.2697 31.2176 23.3113 31.4177 23.4223 31.5801C23.5333 31.7426 23.7044 31.8541 23.8979 31.8899H23.9929ZM17.2268 22.7488C19.4848 25.0097 20.2732 28.3515 19.264 31.3832C19.1712 31.6666 18.9174 31.8664 18.6201 31.8899C18.5435 31.905 18.4646 31.905 18.3879 31.8899C18.0007 31.7641 17.7882 31.3486 17.9129 30.961C18.7778 28.4561 18.1419 25.6771 16.2736 23.7976C14.4053 21.9181 11.6303 21.2655 9.12013 22.1155C8.72976 22.2408 8.3112 22.0291 8.18068 21.6405C8.05604 21.2529 8.26846 20.8375 8.65569 20.7116C11.6677 19.7055 14.9896 20.4951 17.2268 22.7488ZM8.30825 29.9347C7.81859 28.7522 8.08897 27.3911 8.99346 26.4855C10.2412 25.3229 12.1855 25.3572 13.3914 26.5631C14.5973 27.769 14.6316 29.7134 13.469 30.961C12.8757 31.5551 12.0708 31.8892 11.2312 31.8899C9.95131 31.8889 8.7979 31.1173 8.30825 29.9347ZM10.3057 30.1177C10.9696 30.5639 11.8562 30.4796 12.424 29.916C12.7419 29.6006 12.9205 29.1711 12.9201 28.7232C12.9194 27.9233 12.3542 27.235 11.5697 27.0788C10.7852 26.9225 9.99936 27.3416 9.69216 28.0802C9.38495 28.8189 9.64172 29.6716 10.3057 30.1177Z" fill="#1DA1F2"/>
+  </svg>
+  <br>
 </div>
 <form id="download-form" action="/download"></form>
 <a class="rocket-button" onclick="document.getElementById('download-form').submit();">
@@ -497,10 +504,31 @@ body .dribbble img {
         <path d="M15.6021597,5.99977504 L8.39784027,5.99977504 C8.54788101,5.6643422 8.70496315,5.3309773 8.86908669,4.99968036 L15.1309133,4.99968036 C15.2950369,5.3309773 15.452119,5.6643422 15.6021597,5.99977504 Z" fill-opacity="0.3" fill="var(--rocket-line)"></path>
     </symbol>
 </svg>
+<p id="file-details"></p>
 <!--Credit: Rocket Button by Aaron Iker-->
 <!--<a class="dribbble" href="https://dribbble.com/shots/8224762--Button" target="_blank"><img src="https://cdn.dribbble.com/assets/dribbble-ball-mark-2bd45f09c2fb58dbbfb44766d5d1d07c5a12972d602ef8b32204d28fa3dda554.svg" alt=""></a>-->
 <script> 
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{("undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this).charming=e()}}(function(){return function(){return function e(n,t,r){function o(f,u){if(!t[f]){if(!n[f]){var c="function"==typeof require&&require;if(!u&&c)return c(f,!0);if(i)return i(f,!0);var a=new Error("Cannot find module '"+f+"'");throw a.code="MODULE_NOT_FOUND",a}var d=t[f]={exports:{}};n[f][0].call(d.exports,function(e){return o(n[f][1][e]||e)},d,d.exports,e,n,t,r)}return t[f].exports}for(var i="function"==typeof require&&require,f=0;f<r.length;f++)o(r[f]);return o}}()({1:[function(e,n,t){n.exports=function(e,{tagName:n="span",split:t,setClassName:r=function(e){return"char"+e}}={}){e.normalize();let o=1;function i(e){const i=e.parentNode,f=e.nodeValue;(t?t(f):f.split("")).forEach(function(t){const f=document.createElement(n),u=r(o++,t);u&&(f.className=u),f.appendChild(document.createTextNode(t)),f.setAttribute("aria-hidden","true"),i.insertBefore(f,e)}),""!==f.trim()&&i.setAttribute("aria-label",f),i.removeChild(e)}!function e(n){if(3===n.nodeType)return i(n);const t=Array.prototype.slice.call(n.childNodes);if(1===t.length&&3===t[0].nodeType)return i(t[0]);t.forEach(function(n){e(n)})}(e)}},{}]},{},[1])(1)});
+function formatBytes(a,b=2){if(0===a)return"0 bytes";const c=0>b?0:b,d=Math.floor(Math.log(a)/Math.log(1000));return parseFloat((a/Math.pow(1000,d)).toFixed(c))+" "+["bytes","kB","MB","GB","TB"][d]}
+window.addEventListener('load',
+  function () {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', '/download');
+    http.onreadystatechange = function () {
+      var length = http.getResponseHeader('content-length');
+      var disposition = http.getResponseHeader('content-disposition');
+      filename = '';
+      if (disposition && disposition.indexOf('attachment') !== -1) {
+        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        var matches = filenameRegex.exec(disposition);
+        if (matches != null && matches[1]) { 
+          filename = matches[1].replace(/['"]/g, '');
+        }
+      }
+      document.getElementById('file-details').innerHTML = filename + ' (' + String(formatBytes(length)) + ')';
+    }
+    http.send();
+  }, false);
 const d = 40;
 document.querySelectorAll('.rocket-button').forEach(elem => {
     elem.querySelectorAll('.default, .success > div').forEach(text => {

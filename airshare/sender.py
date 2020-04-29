@@ -29,22 +29,26 @@ __all__ = ["send", "send_server", "send_server_proc"]
 # Request handlers
 
 
+async def _text_page(request):
+    """Renders a text viewing page, GET handler for route '/'."""
+    text = pkgutil.get_data(__name__, "static/text.html").decode()
+    return web.Response(text=text, content_type="text/html")
+
+
 async def _text_sender(request):
-    """Returns the text being shared, GET handler for route '/'."""
+    """Returns the text being shared, GET handler for route '/text'."""
     address = ""
     peername = request.transport.get_extra_info("peername")
     if peername is not None:
         host, _ = peername
         address = " (by " + str(host) + ")"
-    print("Content requested" + address + ", transferred!")
+    print("Content viewed" + address + "!")
     return web.Response(text=request.app["text"])
 
 
 async def _download_page(request):
     """Renders a download page, GET handler for route '/'."""
     download = pkgutil.get_data(__name__, "static/download.html").decode()
-    file_name = request.app["file_name"]
-    file_size = humanize.naturalsize(request.app["file_size"])
     return web.Response(text=download, content_type="text/html")
 
 
@@ -55,7 +59,10 @@ async def _file_stream_sender(request):
     if peername is not None:
         host, _ = peername
         address = " (by " + str(host) + ")"
-    print("Content requested" + address + ", transferred!")
+    if request.method == "GET": 
+        print("Content requested" + address + ", transferred!")
+    elif request.method == "HEAD":
+        print("Content examined" + address + "!")
     response = web.StreamResponse()
     file_path = request.app["file_path"]
     file_name = request.app["file_name"]
@@ -132,7 +139,7 @@ def send(*, code, file, compress=False):
     m = MultipartEncoder(fields={"field0": (name, open(file, "rb"))})
     headers = {"content-type": m.content_type}
     r = requests.post(url + "/upload", data=m, headers=headers)
-    print("Uploaded `" + name + "` to airshare `" + code + ".local`!")
+    print("Uploaded `" + name + "` to Airshare `" + code + ".local`!")
     return r.status_code
 
 
@@ -189,7 +196,8 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     file_size = ""
     if text is not None:
         app["text"] = content
-        app.router.add_get(path="/", handler=_text_sender)
+        app.router.add_get(path="/", handler=_text_page)
+        app.router.add_get(path="/text", handler=_text_sender)
         app.router.add_get(path="/airshare", handler=_is_airshare_text_sender)
     elif file:
         app["file_path"] = os.path.realpath(content)
