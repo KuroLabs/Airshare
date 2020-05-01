@@ -12,9 +12,12 @@ from zipfile import ZipFile
 from zeroconf import IPVersion, ServiceInfo, Zeroconf
 
 
-__all__ = ["get_local_ip_address", "get_service_info", "register_service",
-           "get_zip_file", "unzip_file", "get_clipboard_paths",
-           "is_file_copyable"]
+from .qrcode import QRCode, ErrorCorrectLevel
+
+
+__all__ = ["get_local_ip_address", "qr_code", "get_service_info",
+           "register_service", "get_zip_file", "unzip_file",
+           "get_clipboard_paths", "is_file_copyable"]
 
 
 # Local IP Address
@@ -34,6 +37,16 @@ def get_local_ip_address():
     s.close()
     ip = socket.inet_aton(ip)
     return ip
+
+
+# QR Code handlers
+
+
+def qr_code(url):
+    qr = QRCode.getMinimumQRCode(url, ErrorCorrectLevel.M)
+    qr.setErrorCorrectLevel(ErrorCorrectLevel.M)
+    qr.make()
+    qr.printQr()
 
 
 # Zeroconf Utilities

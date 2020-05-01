@@ -8,7 +8,6 @@ from multiprocessing import Process
 import os
 import pkgutil
 import platform
-import pyqrcode
 import requests
 from requests_toolbelt import MultipartEncoder
 import socket
@@ -16,7 +15,7 @@ import socket
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotReceiverError
 from .utils import get_local_ip_address, get_service_info, get_zip_file, \
-    register_service
+    register_service, qr_code
 
 
 __all__ = ["send", "send_server", "send_server_proc"]
@@ -214,9 +213,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     print("`" + content + "`" + file_size + " available at " + ip
           + " and `http://" + code + ".local" + url_port + "`, press CtrlC"
           + " to stop sharing...")
-    if platform.system() != "Windows":
-        print(pyqrcode.create("http://" + ip + url_port)
-                      .terminal(quiet_zone=1))
+    qr_code("http://" + ip + url_port)
     loop.run_forever()
 
 

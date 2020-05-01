@@ -38,6 +38,7 @@ setuptools.setup(
         "pyqrcode >= 1.2.1",
         "requests >= 2.20.0",
         "requests-toolbelt >= 0.9.1",
+        "termcolor >= 1.1.0",
         "tqdm >= 4.36.1",
         "zeroconf >= 0.25.0",
     ],

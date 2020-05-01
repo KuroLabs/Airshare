@@ -8,7 +8,6 @@ from multiprocessing import Process
 import os
 import pkgutil
 import platform
-import pyqrcode
 import requests
 import socket
 from time import sleep, strftime
@@ -18,7 +17,7 @@ from zipfile import is_zipfile
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotSenderError
 from .utils import get_service_info, get_local_ip_address, register_service, \
-    unzip_file
+    unzip_file, qr_code
 
 
 __all__ = ["receive", "receive_server", "receive_server_proc"]
@@ -167,8 +166,7 @@ def receive_server(*, code, decompress=False, port=80):
     ip = socket.inet_ntoa(addresses[0]) + url_port
     print("Waiting for uploaded files at " + ip + " and `http://"
           + code + ".local" + url_port + "`, press CtrlC to stop receiving...")
-    if platform.system() != "Windows":
-        print(pyqrcode.create("http://" + ip).terminal(quiet_zone=1))
+    qr_code("http://" + ip)
     if decompress:
         print("Note: Any Zip Archives will be decompressed!")
     loop.run_forever()
