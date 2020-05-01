@@ -6,7 +6,7 @@ with open("PIP.md", "r") as f:
 
 setuptools.setup(
     name="Airshare",
-    version="0.1.0",
+    version="0.1.1",
     author="Kandavel A, Mohanasundar M, Nanda H Krishna",
     author_email="kurolabs.org+airshare@gmail.com",
     description="An easy way to share content in a local network.",
@@ -37,11 +37,10 @@ setuptools.setup(
         "humanize >= 0.5.1",
         "pyperclip >= 1.8.0",
         "pyqrcode >= 1.2.1",
-        "python-magic == 0.4.15",
         "requests >= 2.20.0",
         "requests-toolbelt >= 0.9.1",
         "tqdm >= 4.36.1",
         "zeroconf >= 0.25.0",
-    ] + ["python-magic-bin == 0.4.14"] if "win" in sys.platform else [],
+    ],
     python_requires=">=3.6",
 )

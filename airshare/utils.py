@@ -1,7 +1,7 @@
 """Utility functions for Airshare."""
 
 
-import magic
+import mimetypes
 import os
 import pyperclip
 import re
@@ -191,9 +191,11 @@ def is_file_copyable(file_path):
     copyable : boolean
         True if the file can be copied to the clipboard, False otherwise.
     """
-    file_type = magic.Magic(mime=True).from_file(file_path)
-    if (re.findall("text|json", file_type, re.IGNORECASE)):
-        copyable = True
-    else:
-        copyable = False
+    file_type = mimetypes.guess_type(file_path)[0]
+    copyable = False
+    if file_type is not None:
+        if (re.findall("text|json", file_type, re.IGNORECASE)):
+            copyable = True
+        else:
+            copyable = False
     return copyable

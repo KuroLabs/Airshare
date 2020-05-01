@@ -4,7 +4,6 @@
 from aiohttp import web
 import asyncio
 import humanize
-import magic
 from multiprocessing import Process
 import os
 import pkgutil
@@ -68,8 +67,7 @@ async def _file_stream_sender(request):
     file_name = request.app["file_name"]
     file_size = str(request.app["file_size"])
     header = "attachment; filename={}; size={}".format(file_name, file_size)
-    response.headers["content-type"] = magic.Magic(mime=True) \
-                                            .from_file(file_path)
+    response.headers["content-type"] = "application/octet-stream"
     response.headers["content-length"] = str(request.app["file_size"])
     response.headers["content-disposition"] = header
     await response.prepare(request)
@@ -203,7 +201,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
         app["file_path"] = os.path.realpath(content)
         app["file_name"] = name or app["file_path"].split(os.path.sep)[-1]
         app["file_size"] = os.stat(app["file_path"]).st_size
-        file_size = " (" + humanize.naturalsize(app["file_size"]) + ") "
+        file_size = " (" + humanize.naturalsize(app["file_size"]) + ")"
         content = app["file_name"]
         app.router.add_get(path="/", handler=_download_page)
         app.router.add_get(path="/airshare", handler=_is_airshare_file_sender)
@@ -216,7 +214,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     if port != 80:
         url_port = ":" + str(port)
     ip = socket.inet_ntoa(addresses[0]) + url_port
-    print("`" + content + "`" + file_size + "available at " + ip
+    print("`" + content + "`" + file_size + " available at " + ip
           + " and `http://" + code + ".local" + url_port + "`, press CtrlC"
           + " to stop sharing...")
     if platform.system() != "Windows":

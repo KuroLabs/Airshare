@@ -58,6 +58,7 @@ def main(code, port, text, upload, clip_send, clip_receive, file_path, files):
             if is_file_copyable(content):
                 with open(content, "r") as f:
                     pyperclip.copy(f.read())
+                print("File copied to clipboard!")
             else:
                 print("This file cannot be copied to the clipboard!")
         else:
