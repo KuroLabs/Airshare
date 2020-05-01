@@ -1,5 +1,4 @@
 import setuptools
-import sys
 
 with open("PIP.md", "r") as f:
     long_description = f.read()

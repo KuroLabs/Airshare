@@ -13,7 +13,7 @@ import requests
 import socket
 from time import sleep, strftime
 from tqdm import tqdm
-from zipfile import ZipFile, is_zipfile
+from zipfile import is_zipfile
 
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotSenderError
@@ -114,7 +114,7 @@ def receive(*, code, decompress=False):
             file_size = int(header.split("=")[-1])
             if os.path.isfile(file_path):
                 file_name, file_ext = os.path.splitext(file_name)
-                file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
+                file_name += "-" + strftime("%Y%m%d%H%M%S") + file_ext
                 file_path = os.getcwd() + os.path.sep + file_name
             with open(file_path, "wb") as f:
                 desc = "Downloading `" + file_name + "`"

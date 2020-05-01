@@ -12,9 +12,6 @@ import pyqrcode
 import requests
 from requests_toolbelt import MultipartEncoder
 import socket
-import tempfile
-from time import sleep, strftime
-from zipfile import ZipFile
 
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotReceiverError
@@ -58,7 +55,7 @@ async def _file_stream_sender(request):
     if peername is not None:
         host, _ = peername
         address = " (by " + str(host) + ")"
-    if request.method == "GET": 
+    if request.method == "GET":
         print("Content requested" + address + ", transferred!")
     elif request.method == "HEAD":
         print("Content examined" + address + "!")

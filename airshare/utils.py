@@ -5,11 +5,9 @@ import mimetypes
 import os
 import pyperclip
 import re
-import requests
 import socket
 import tempfile
 from time import strftime
-from tqdm import tqdm
 from zipfile import ZipFile
 from zeroconf import IPVersion, ServiceInfo, Zeroconf
 
