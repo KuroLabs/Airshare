@@ -1,5 +1,4 @@
-r"""
-QR Code Generator for Python
+r"""QR Code Generator for Python
 Copyright (c) 2012 Kazuhiko Arase
 URL: http://www.d-project.com/
 Licensed under the MIT license:
@@ -8,7 +7,7 @@ The word 'QR Code' is registered trademark of
 DENSO WAVE INCORPORATED
 http://www.denso-wave.com/qrcode/faqpatent-e.html
 Modified by Airshare Developers: added printQr()
-"""   
+"""
 
 
 from termcolor import colored
@@ -28,11 +27,13 @@ class QRCode:
 
     def getTypeNumber(self):
         return self.typeNumber
+
     def setTypeNumber(self, typeNumber):
         self.typeNumber = typeNumber
 
     def getErrorCorrectLevel(self):
         return self.errorCorrectLevel
+
     def setErrorCorrectLevel(self, errorCorrectLevel):
         self.errorCorrectLevel = errorCorrectLevel
 
@@ -40,7 +41,7 @@ class QRCode:
         self.qrDataList = []
 
     def addData(self, data):
-        self.qrDataList.append(QR8BitByte(data) )
+        self.qrDataList.append(QR8BitByte(data))
 
     def getDataCount(self):
         return len(self.qrDataList)
@@ -49,8 +50,8 @@ class QRCode:
         return self.qrDataList[index]
 
     def isDark(self, row, col):
-        return (self.modules[row][col] if self.modules[row][col] != None
-            else False)
+        return (self.modules[row][col] if self.modules[row][col] is not None
+                else False)
 
     def getModuleCount(self):
         return self.moduleCount
@@ -66,8 +67,8 @@ class QRCode:
                     print(WHITE, end="")
                 else:
                     color = BLACK if self.isDark(row - 1, col - 1) else WHITE
-                    print(color, end="")    
-            print()   
+                    print(color, end="")
+            print()
         print()
 
     def make(self):
@@ -85,10 +86,9 @@ class QRCode:
         return pattern
 
     def _make(self, test, maskPattern):
-
         self.moduleCount = self.typeNumber * 4 + 17
         self.modules = [[None] * self.moduleCount
-            for i in range(self.moduleCount)]
+                        for i in range(self.moduleCount)]
 
         self._setupPositionProbePattern(0, 0)
         self._setupPositionProbePattern(self.moduleCount - 7, 0)
@@ -110,10 +110,9 @@ class QRCode:
         self._mapData(data, maskPattern)
 
     def _mapData(self, data, maskPattern):
-
-        rows = list(range(self.moduleCount) )
+        rows = list(range(self.moduleCount))
         cols = [col - 1 if col <= 6 else col
-            for col in range(self.moduleCount - 1, 0, -2)]
+                for col in range(self.moduleCount - 1, 0, -2)]
         maskFunc = QRUtil.getMaskFunction(maskPattern)
 
         byteIndex = 0
@@ -123,11 +122,11 @@ class QRCode:
             rows.reverse()
             for row in rows:
                 for c in range(2):
-                    if self.modules[row][col - c] == None:
+                    if self.modules[row][col - c] is None:
 
                         dark = False
                         if byteIndex < len(data):
-                            dark = ( (data[byteIndex] >> bitIndex) & 1) == 1
+                            dark = ((data[byteIndex] >> bitIndex) & 1) == 1
                         if maskFunc(row, col - c):
                             dark = not dark
                         self.modules[row][col - c] = dark
@@ -141,13 +140,13 @@ class QRCode:
         pos = QRUtil.getPatternPosition(self.typeNumber)
         for row in pos:
             for col in pos:
-                if self.modules[row][col] != None:
+                if self.modules[row][col] is not None:
                     continue
                 for r in range(-2, 3):
                     for c in range(-2, 3):
                         self.modules[row + r][col + c] = (
                             r == -2 or r == 2 or c == -2 or c == 2
-                            or (r == 0 and c == 0) )
+                            or (r == 0 and c == 0))
 
     def _setupPositionProbePattern(self, row, col):
         for r in range(-1, 8):
@@ -156,17 +155,17 @@ class QRCode:
                         or col + c <= -1 or self.moduleCount <= col + c):
                     continue
                 self.modules[row + r][col + c] = (
-                    (0 <= r and r <= 6 and (c == 0 or c == 6) )
-                    or (0 <= c and c <= 6 and (r == 0 or r == 6) )
-                    or (2 <= r and r <= 4 and 2 <= c and c <= 4) )
+                    (0 <= r and r <= 6 and (c == 0 or c == 6))
+                    or (0 <= c and c <= 6 and (r == 0 or r == 6))
+                    or (2 <= r and r <= 4 and 2 <= c and c <= 4))
 
     def _setupTimingPattern(self):
         for r in range(8, self.moduleCount - 8):
-            if self.modules[r][6] != None:
+            if self.modules[r][6] is not None:
                 continue
             self.modules[r][6] = r % 2 == 0
         for c in range(8, self.moduleCount - 8):
-            if self.modules[6][c] != None:
+            if self.modules[6][c] is not None:
                 continue
             self.modules[6][c] = c % 2 == 0
 
@@ -174,19 +173,18 @@ class QRCode:
         bits = QRUtil.getBCHTypeNumber(self.typeNumber)
         for i in range(18):
             self.modules[i // 3][i % 3 + self.moduleCount - 8 - 3] = (
-                not test and ( (bits >> i) & 1) == 1)
+                not test and ((bits >> i) & 1) == 1)
         for i in range(18):
             self.modules[i % 3 + self.moduleCount - 8 - 3][i // 3] = (
-                not test and ( (bits >> i) & 1) == 1)
+                not test and ((bits >> i) & 1) == 1)
 
     def _setupTypeInfo(self, test, maskPattern):
-
         data = (self.errorCorrectLevel << 3) | maskPattern
         bits = QRUtil.getBCHTypeInfo(data)
 
         # vertical
         for i in range(15):
-            mod = not test and ( (bits >> i) & 1) == 1
+            mod = not test and ((bits >> i) & 1) == 1
             if i < 6:
                 self.modules[i][8] = mod
             elif i < 8:
@@ -196,7 +194,7 @@ class QRCode:
 
         # horizontal
         for i in range(15):
-            mod = not test and ( (bits >> i) & 1) == 1
+            mod = not test and ((bits >> i) & 1) == 1
             if i < 8:
                 self.modules[8][self.moduleCount - i - 1] = mod
             elif i < 9:
@@ -209,22 +207,21 @@ class QRCode:
 
     @staticmethod
     def _createData(typeNumber, errorCorrectLevel, dataArray):
-
         rsBlocks = RSBlock.getRSBlocks(typeNumber, errorCorrectLevel)
 
         buffer = BitBuffer()
 
         for data in dataArray:
             buffer.put(data.getMode(), 4)
-            buffer.put(data.getLength(), data.getLengthInBits(typeNumber) )
+            buffer.put(data.getLength(), data.getLengthInBits(typeNumber))
             data.write(buffer)
 
         totalDataCount = sum(rsBlock.getDataCount()
-                              for rsBlock in rsBlocks)
+                             for rsBlock in rsBlocks)
 
         if buffer.getLengthInBits() > totalDataCount * 8:
             raise Exception('code length overflow. (%s>%s)' %
-                    (buffer.getLengthInBits(), totalDataCount * 8) )
+                            (buffer.getLengthInBits(), totalDataCount * 8))
 
         # end code
         if buffer.getLengthInBits() + 4 <= totalDataCount * 8:
@@ -247,7 +244,6 @@ class QRCode:
 
     @staticmethod
     def _createBytes(buffer, rsBlocks):
-
         offset = 0
 
         maxDcCount = 0
@@ -256,7 +252,7 @@ class QRCode:
         dcdata = [None] * len(rsBlocks)
         ecdata = [None] * len(rsBlocks)
 
-        for r in range(len(rsBlocks) ):
+        for r in range(len(rsBlocks)):
 
             dcCount = rsBlocks[r].getDataCount()
             ecCount = rsBlocks[r].getTotalCount() - dcCount
@@ -265,7 +261,7 @@ class QRCode:
             maxEcCount = max(maxEcCount, ecCount)
 
             dcdata[r] = [0] * dcCount
-            for i in range(len(dcdata[r] ) ):
+            for i in range(len(dcdata[r])):
                 dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset]
             offset += dcCount
 
@@ -274,26 +270,26 @@ class QRCode:
 
             modPoly = rawPoly.mod(rsPoly)
             ecdata[r] = [0] * (rsPoly.getLength() - 1)
-            for i in range(len(ecdata[r]) ):
+            for i in range(len(ecdata[r])):
                 modIndex = i + modPoly.getLength() - len(ecdata[r])
                 ecdata[r][i] = modPoly.get(modIndex) if modIndex >= 0 else 0
 
         totalCodeCount = sum(rsBlock.getTotalCount()
-                              for rsBlock in rsBlocks)
+                             for rsBlock in rsBlocks)
 
         data = [0] * totalCodeCount
 
         index = 0
 
         for i in range(maxDcCount):
-            for r in range(len(rsBlocks) ):
-                if i < len(dcdata[r] ):
+            for r in range(len(rsBlocks)):
+                if i < len(dcdata[r]):
                     data[index] = dcdata[r][i]
                     index += 1
 
         for i in range(maxEcCount):
-            for r in range(len(rsBlocks) ):
-                if i < len(ecdata[r] ):
+            for r in range(len(rsBlocks)):
+                if i < len(ecdata[r]):
                     data[index] = ecdata[r][i]
                     index += 1
 
@@ -301,7 +297,7 @@ class QRCode:
 
     @staticmethod
     def getMinimumQRCode(data, errorCorrectLevel):
-        mode = Mode.MODE_8BIT_BYTE # fixed to 8bit byte
+        mode = Mode.MODE_8BIT_BYTE  # fixed to 8bit byte
         qr = QRCode()
         qr.setErrorCorrectLevel(errorCorrectLevel)
         qr.addData(data)
@@ -314,17 +310,20 @@ class QRCode:
         qr.make()
         return qr
 
+
 class Mode:
-    MODE_NUMBER    = 1 << 0
+    MODE_NUMBER = 1 << 0
     MODE_ALPHA_NUM = 1 << 1
     MODE_8BIT_BYTE = 1 << 2
-    MODE_KANJI     = 1 << 3
+    MODE_KANJI = 1 << 3
+
 
 class ErrorCorrectLevel:
-    L = 1 # 7%
-    M = 0 # 15%
-    Q = 3 # 25%
-    H = 2 # 30%
+    L = 1  # 7%
+    M = 0  # 15%
+    Q = 3  # 25%
+    H = 2  # 30%
+
 
 class MaskPattern:
     PATTERN000 = 0
@@ -335,6 +334,7 @@ class MaskPattern:
     PATTERN101 = 5
     PATTERN110 = 6
     PATTERN111 = 7
+
 
 class QRUtil:
 
@@ -383,20 +383,30 @@ class QRUtil:
         [6, 32, 58, 84, 110, 136, 162],
         [6, 26, 54, 82, 110, 138, 166],
         [6, 30, 58, 86, 114, 142, 170]
-        ]
+    ]
 
     MAX_LENGTH = [
-        [ [41,  25,  17,  10],  [34,  20,  14,  8],   [27,  16,  11,  7],  [17,  10,  7,   4] ],
-        [ [77,  47,  32,  20],  [63,  38,  26,  16],  [48,  29,  20,  12], [34,  20,  14,  8] ],
-        [ [127, 77,  53,  32],  [101, 61,  42,  26],  [77,  47,  32,  20], [58,  35,  24,  15] ],
-        [ [187, 114, 78,  48],  [149, 90,  62,  38],  [111, 67,  46,  28], [82,  50,  34,  21] ],
-        [ [255, 154, 106, 65],  [202, 122, 84,  52],  [144, 87,  60,  37], [106, 64,  44,  27] ],
-        [ [322, 195, 134, 82],  [255, 154, 106, 65],  [178, 108, 74,  45], [139, 84,  58,  36] ],
-        [ [370, 224, 154, 95],  [293, 178, 122, 75],  [207, 125, 86,  53], [154, 93,  64,  39] ],
-        [ [461, 279, 192, 118], [365, 221, 152, 93],  [259, 157, 108, 66], [202, 122, 84,  52] ],
-        [ [552, 335, 230, 141], [432, 262, 180, 111], [312, 189, 130, 80], [235, 143, 98,  60] ],
-        [ [652, 395, 271, 167], [513, 311, 213, 131], [364, 221, 151, 93], [288, 174, 119, 74] ]
-        ]
+        [[41,  25,  17,  10],  [34,  20,  14,  8],   [
+            27,  16,  11,  7],  [17,  10,  7,   4]],
+        [[77,  47,  32,  20],  [63,  38,  26,  16],
+            [48,  29,  20,  12], [34,  20,  14,  8]],
+        [[127, 77,  53,  32],  [101, 61,  42,  26],  [
+            77,  47,  32,  20], [58,  35,  24,  15]],
+        [[187, 114, 78,  48],  [149, 90,  62,  38],  [
+            111, 67,  46,  28], [82,  50,  34,  21]],
+        [[255, 154, 106, 65],  [202, 122, 84,  52],  [
+            144, 87,  60,  37], [106, 64,  44,  27]],
+        [[322, 195, 134, 82],  [255, 154, 106, 65],  [
+            178, 108, 74,  45], [139, 84,  58,  36]],
+        [[370, 224, 154, 95],  [293, 178, 122, 75],  [
+            207, 125, 86,  53], [154, 93,  64,  39]],
+        [[461, 279, 192, 118], [365, 221, 152, 93],  [
+            259, 157, 108, 66], [202, 122, 84,  52]],
+        [[552, 335, 230, 141], [432, 262, 180, 111], [
+            312, 189, 130, 80], [235, 143, 98,  60]],
+        [[652, 395, 271, 167], [513, 311, 213, 131],
+            [364, 221, 151, 93], [288, 174, 119, 74]]
+    ]
 
     @staticmethod
     def getMaxLength(typeNumber, mode, errorCorrectLevel):
@@ -406,20 +416,20 @@ class QRUtil:
             ErrorCorrectLevel.M: 1,
             ErrorCorrectLevel.Q: 2,
             ErrorCorrectLevel.H: 3
-            }[errorCorrectLevel]
+        }[errorCorrectLevel]
         m = {
             Mode.MODE_NUMBER: 0,
             Mode.MODE_ALPHA_NUM: 1,
             Mode.MODE_8BIT_BYTE: 2,
             Mode.MODE_KANJI: 3
-            }[mode]
+        }[mode]
         return QRUtil.MAX_LENGTH[t][e][m]
 
     @staticmethod
     def getErrorCorrectPolynomial(errorCorrectLength):
         a = Polynomial([1])
         for i in range(errorCorrectLength):
-            a = a.multiply(Polynomial([1, QRMath.gexp(i)]) )
+            a = a.multiply(Polynomial([1, QRMath.gexp(i)]))
         return a
 
     @staticmethod
@@ -438,14 +448,13 @@ class QRUtil:
             MaskPattern.PATTERN101:
                 lambda i, j: (i * j) % 2 + (i * j) % 3 == 0,
             MaskPattern.PATTERN110:
-                lambda i, j: ( (i * j) % 2 + (i * j) % 3) % 2 == 0,
+                lambda i, j: ((i * j) % 2 + (i * j) % 3) % 2 == 0,
             MaskPattern.PATTERN111:
-                lambda i, j: ( (i * j) % 3 + (i + j) % 2) % 2 == 0
-            }[maskPattern]
+                lambda i, j: ((i * j) % 3 + (i + j) % 2) % 2 == 0
+        }[maskPattern]
 
     @staticmethod
     def getLostPoint(qrcode):
-
         moduleCount = qrcode.getModuleCount()
         lostPoint = 0
 
@@ -487,22 +496,22 @@ class QRUtil:
             for col in range(moduleCount - 6):
                 if (qrcode.isDark(row, col)
                         and not qrcode.isDark(row, col + 1)
-                        and     qrcode.isDark(row, col + 2)
-                        and     qrcode.isDark(row, col + 3)
-                        and     qrcode.isDark(row, col + 4)
+                        and qrcode.isDark(row, col + 2)
+                        and qrcode.isDark(row, col + 3)
+                        and qrcode.isDark(row, col + 4)
                         and not qrcode.isDark(row, col + 5)
-                        and     qrcode.isDark(row, col + 6) ):
+                        and qrcode.isDark(row, col + 6)):
                     lostPoint += 40
 
         for col in range(moduleCount):
             for row in range(moduleCount - 6):
                 if (qrcode.isDark(row, col)
                         and not qrcode.isDark(row + 1, col)
-                        and     qrcode.isDark(row + 2, col)
-                        and     qrcode.isDark(row + 3, col)
-                        and     qrcode.isDark(row + 4, col)
+                        and qrcode.isDark(row + 2, col)
+                        and qrcode.isDark(row + 3, col)
+                        and qrcode.isDark(row + 4, col)
                         and not qrcode.isDark(row + 5, col)
-                        and     qrcode.isDark(row + 6, col) ):
+                        and qrcode.isDark(row + 6, col)):
                     lostPoint += 40
 
         # LEVEL4
@@ -517,10 +526,10 @@ class QRUtil:
 
         return lostPoint
 
-    G15 = ( (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) |
-            (1 << 2) | (1 << 1) | (1 << 0) )
-    G18 = ( (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) |
-            (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0) )
+    G15 = ((1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) |
+           (1 << 2) | (1 << 1) | (1 << 0))
+    G18 = ((1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) |
+           (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0))
     G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1)
 
     @staticmethod
@@ -528,15 +537,15 @@ class QRUtil:
         d = data << 10
         while QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0:
             d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) -
-                                 QRUtil.getBCHDigit(QRUtil.G15) ) )
-        return ( (data << 10) | d) ^ QRUtil.G15_MASK
+                                 QRUtil.getBCHDigit(QRUtil.G15)))
+        return ((data << 10) | d) ^ QRUtil.G15_MASK
 
     @staticmethod
     def getBCHTypeNumber(data):
         d = data << 12
         while QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0:
             d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) -
-                                 QRUtil.getBCHDigit(QRUtil.G18) ) )
+                                 QRUtil.getBCHDigit(QRUtil.G18)))
         return (data << 12) | d
 
     @staticmethod
@@ -550,6 +559,7 @@ class QRUtil:
     @staticmethod
     def stringToBytes(s):
         return [ord(c) & 0xff for c in s]
+
 
 class QR8BitByte:
 
@@ -569,40 +579,41 @@ class QR8BitByte:
     '''
 
     def write(self, buffer):
-        data = QRUtil.stringToBytes(self.getData() )
+        data = QRUtil.stringToBytes(self.getData())
         for d in data:
             buffer.put(d, 8)
 
     def getLength(self):
-        return len(QRUtil.stringToBytes(self.getData() ) )
+        return len(QRUtil.stringToBytes(self.getData()))
 
     def getLengthInBits(self, type):
-        if 1 <= type and type < 10: # 1 - 9
+        if 1 <= type and type < 10:  # 1 - 9
             return {
                 Mode.MODE_NUMBER:    10,
                 Mode.MODE_ALPHA_NUM: 9,
                 Mode.MODE_8BIT_BYTE: 8,
                 Mode.MODE_KANJI:     8
-                }[self.mode]
+            }[self.mode]
 
-        elif type < 27: # 10 - 26
+        elif type < 27:  # 10 - 26
             return {
                 Mode.MODE_NUMBER:    12,
                 Mode.MODE_ALPHA_NUM: 11,
                 Mode.MODE_8BIT_BYTE: 16,
                 Mode.MODE_KANJI:     10
-                }[self.mode]
+            }[self.mode]
 
-        elif type < 41: # 27 - 40
+        elif type < 41:  # 27 - 40
             return {
                 Mode.MODE_NUMBER:    14,
                 Mode.MODE_ALPHA_NUM: 13,
                 Mode.MODE_8BIT_BYTE: 16,
                 Mode.MODE_KANJI:     12
-                }[self.mode]
+            }[self.mode]
 
         else:
             raise Exception('type:%s' % type)
+
 
 class QRMath:
 
@@ -611,16 +622,17 @@ class QRMath:
 
     @staticmethod
     def _init():
-
         QRMath.EXP_TABLE = [0] * 256
         for i in range(256):
             QRMath.EXP_TABLE[i] = (1 << i if i < 8 else
-                     QRMath.EXP_TABLE[i - 4] ^ QRMath.EXP_TABLE[i - 5] ^
-                     QRMath.EXP_TABLE[i - 6] ^ QRMath.EXP_TABLE[i - 8])
+                                   QRMath.EXP_TABLE[i - 4]
+                                   ^ QRMath.EXP_TABLE[i - 5]
+                                   ^ QRMath.EXP_TABLE[i - 6]
+                                   ^ QRMath.EXP_TABLE[i - 8])
 
         QRMath.LOG_TABLE = [0] * 256
         for i in range(255):
-            QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i
+            QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]] = i
 
     @staticmethod
     def glog(n):
@@ -636,8 +648,10 @@ class QRMath:
             n -= 255
         return QRMath.EXP_TABLE[n]
 
+
 # initialize statics
 QRMath._init()
+
 
 class Polynomial:
 
@@ -655,29 +669,30 @@ class Polynomial:
         return len(self.num)
 
     def __repr__(self):
-        return ','.join( [str(self.get(i) )
-            for i in range(self.getLength() ) ] )
+        return ','.join([str(self.get(i))
+                         for i in range(self.getLength())])
 
     def toLogString(self):
-        return ','.join( [str(QRMath.glog(self.get(i) ) )
-            for i in range(self.getLength() ) ] )
+        return ','.join([str(QRMath.glog(self.get(i)))
+                         for i in range(self.getLength())])
 
     def multiply(self, e):
         num = [0] * (self.getLength() + e.getLength() - 1)
-        for i in range(self.getLength() ):
-            for j in range(e.getLength() ):
-                num[i + j] ^= QRMath.gexp(QRMath.glog(self.get(i) ) +
-                              QRMath.glog(e.get(j) ) )
+        for i in range(self.getLength()):
+            for j in range(e.getLength()):
+                num[i + j] ^= QRMath.gexp(QRMath.glog(self.get(i)) +
+                                          QRMath.glog(e.get(j)))
         return Polynomial(num)
 
     def mod(self, e):
         if self.getLength() - e.getLength() < 0:
             return self
-        ratio = QRMath.glog(self.get(0) ) - QRMath.glog(e.get(0) )
+        ratio = QRMath.glog(self.get(0)) - QRMath.glog(e.get(0))
         num = self.num[:]
-        for i in range(e.getLength() ):
-            num[i] ^= QRMath.gexp(QRMath.glog(e.get(i) ) + ratio)
+        for i in range(e.getLength()):
+            num[i] ^= QRMath.gexp(QRMath.glog(e.get(i)) + ratio)
         return Polynomial(num).mod(e)
+
 
 class RSBlock:
 
@@ -747,11 +762,11 @@ class RSBlock:
         [4, 69, 43, 1, 70, 44],
         [6, 43, 19, 2, 44, 20],
         [6, 43, 15, 2, 44, 16]
-        ]
+    ]
 
     def __init__(self, totalCount, dataCount):
         self.totalCount = totalCount
-        self.dataCount  = dataCount
+        self.dataCount = dataCount
 
     def getDataCount(self):
         return self.dataCount
@@ -760,7 +775,7 @@ class RSBlock:
         return self.totalCount
 
     def __repr__(self):
-        return ('(total=%s,data=%s)' % (self.totalCount, self.dataCount) )
+        return ('(total=%s,data=%s)' % (self.totalCount, self.dataCount))
 
     @staticmethod
     def getRSBlocks(typeNumber, errorCorrectLevel):
@@ -768,9 +783,9 @@ class RSBlock:
         length = len(rsBlock) // 3
         list = []
         for i in range(length):
-            count      = rsBlock[i * 3 + 0]
+            count = rsBlock[i * 3 + 0]
             totalCount = rsBlock[i * 3 + 1]
-            dataCount  = rsBlock[i * 3 + 2]
+            dataCount = rsBlock[i * 3 + 2]
             list += [RSBlock(totalCount, dataCount)] * count
         return list
 
@@ -778,14 +793,15 @@ class RSBlock:
     def getRsBlockTable(typeNumber, errorCorrectLevel):
         return {
             ErrorCorrectLevel.L:
-                RSBlock.RS_BLOCK_TABLE[ (typeNumber - 1) * 4 + 0],
+                RSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0],
             ErrorCorrectLevel.M:
-                RSBlock.RS_BLOCK_TABLE[ (typeNumber - 1) * 4 + 1],
+                RSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1],
             ErrorCorrectLevel.Q:
-                RSBlock.RS_BLOCK_TABLE[ (typeNumber - 1) * 4 + 2],
+                RSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2],
             ErrorCorrectLevel.H:
-                RSBlock.RS_BLOCK_TABLE[ (typeNumber - 1) * 4 + 3]
-            }[errorCorrectLevel]
+                RSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3]
+        }[errorCorrectLevel]
+
 
 class BitBuffer:
 
@@ -801,19 +817,19 @@ class BitBuffer:
         return self.length
 
     def get(self, index):
-        return ( (self.buffer[index // 8] >> (7 - index % 8) ) & 1) == 1
+        return ((self.buffer[index // 8] >> (7 - index % 8)) & 1) == 1
 
     def putBit(self, bit):
         if self.length == len(self.buffer) * 8:
             self.buffer += [0] * self.inclements
         if bit:
-            self.buffer[self.length // 8] |= (0x80 >> (self.length % 8) )
+            self.buffer[self.length // 8] |= (0x80 >> (self.length % 8))
         self.length += 1
 
     def put(self, num, length):
         for i in range(length):
-            self.putBit( ( (num >> (length - i - 1) ) & 1) == 1)
+            self.putBit(((num >> (length - i - 1)) & 1) == 1)
 
     def __repr__(self):
         return ''.join('1' if self.get(i) else '0'
-            for i in range(self.getLengthInBits() ) )
+                       for i in range(self.getLengthInBits()))
