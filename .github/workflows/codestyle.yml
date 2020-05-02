@@ -1,0 +1,24 @@
+# This workflow checks the code style with flake8
+
+name: Flake8 Code Style Check
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Lintly-Flake8
+      uses: grantmcconnaughey/lintly-flake8-github-action@v1.0
+      with:
+        # The GitHub API token to use for creating PR reviews
+        token: ${{ secrets.GITHUB_TOKEN }}
+        # Fail if *any* violations are detected or only *new* ones (valid values are "new" or "any")
+        failIf: any # optional, default is new
+        # Args to pass to the flake8 executable
+        args: . # optional, default is .
+
