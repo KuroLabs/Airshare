@@ -15,7 +15,7 @@ import socket
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotReceiverError
 from .utils import get_local_ip_address, get_service_info, get_zip_file, \
-    register_service, qr_code
+    qr_code, register_service
 
 
 __all__ = ["send", "send_server", "send_server_proc"]
