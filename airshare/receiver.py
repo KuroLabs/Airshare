@@ -16,8 +16,8 @@ from zipfile import is_zipfile
 
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotSenderError
-from .utils import get_service_info, get_local_ip_address, register_service, \
-    qr_code, unzip_file
+from .utils import get_local_ip_address, get_service_info, qr_code, \
+    register_service, unzip_file
 
 
 __all__ = ["receive", "receive_server", "receive_server_proc"]
