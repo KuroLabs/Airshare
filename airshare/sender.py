@@ -7,7 +7,6 @@ import humanize
 from multiprocessing import Process
 import os
 import pkgutil
-import platform
 import requests
 from requests_toolbelt import MultipartEncoder
 import socket
