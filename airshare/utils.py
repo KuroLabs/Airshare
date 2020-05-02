@@ -12,7 +12,7 @@ from zipfile import ZipFile
 from zeroconf import IPVersion, ServiceInfo, Zeroconf
 
 
-from .qrcode import QRCode, ErrorCorrectLevel
+from .qrcode import ErrorCorrectLevel, QRCode
 
 
 __all__ = ["get_local_ip_address", "qr_code", "get_service_info",
@@ -39,7 +39,7 @@ def get_local_ip_address():
     return ip
 
 
-# QR Code handlers
+# QR Code Utility
 
 
 def qr_code(url):
