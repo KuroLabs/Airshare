@@ -35,7 +35,6 @@ setuptools.setup(
         "click >= 7.0",
         "humanize >= 0.5.1",
         "pyperclip >= 1.8.0",
-        "pyqrcode >= 1.2.1",
         "requests >= 2.20.0",
         "requests-toolbelt >= 0.9.1",
         "termcolor >= 1.1.0",
