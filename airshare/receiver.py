@@ -7,7 +7,6 @@ import humanize
 from multiprocessing import Process
 import os
 import pkgutil
-import platform
 import requests
 import socket
 from time import sleep, strftime
