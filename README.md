@@ -20,9 +20,9 @@
   </a>
 </h1>
 
-<h4 align="center">An easy way to share content in a local network using Multicast DNS.</h4>
+<h4 align="center">An easy way to share content in a local network using Multicast-DNS.</h4>
 
-<p align="justify"><b>Airshare</b> is a Python-based CLI tool and module that lets you transfer data between two machines in a local network, P2P, using Multicast DNS. It also opens an HTTP gateway for other non-CLI external interfaces. It works completely offline! Built with aiohttp and zeroconf.</p>
+<p align="justify"><b>Airshare</b> is a Python-based CLI tool and module that lets you transfer data between two machines in a local network, P2P, using Multicast-DNS. It also opens an HTTP gateway for other non-CLI external interfaces. It works completely offline! Built with aiohttp and zeroconf.</p>
 
 ## Important Links
 
@@ -38,6 +38,8 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Airshar
 ```bash
 $ pip install Airshare
 ```
+
+If you have a non-Apple device, consider installing Avahi (for Linux) or Bonjour (for Windows) if you'd like to use Link-local Name Resolution (for the `.local` addresses).
 
 ## Example
 
@@ -60,9 +62,9 @@ You can also `import airshare` in any Python program. Visit the documentation fo
 
 ## Known Issues
 
-* The QR Code feature is not available on Windows. Terminals on Windows are unable to render QR Codes despite our extensive attempts and tests - let us know if you have a solution!
+* Link-local Name Resolution (for the `.local` addresses) on non-Apple devices requires Avahi (on Linux) or Bonjour (on Windows). Chances are you already have them, but if you don't, do check the web on how to install them.
 
-* Link-local Name Resolution, for example, `http://noobmaster.local`, does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery.
+* Link-local Name Resolution does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery.
 
 * Multiple progress bars for concurrent file uploads using `tqdm` may not work as intended on some terminals, refer to the `tqdm` documentation for more details.
 
