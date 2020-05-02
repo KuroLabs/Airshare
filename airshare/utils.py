@@ -51,6 +51,7 @@ def qr_code(url):
 
 # Zeroconf Utilities
 
+
 def get_service_info(code):
     r"""Get service information for an Airshare service.
 
