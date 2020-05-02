@@ -12,9 +12,12 @@ from zipfile import ZipFile
 from zeroconf import IPVersion, ServiceInfo, Zeroconf
 
 
-__all__ = ["get_local_ip_address", "get_service_info", "register_service",
-           "get_zip_file", "unzip_file", "get_clipboard_paths",
-           "is_file_copyable"]
+from .qrcode import ErrorCorrectLevel, QRCode
+
+
+__all__ = ["get_local_ip_address", "qr_code", "get_service_info",
+           "register_service", "get_zip_file", "unzip_file",
+           "get_clipboard_paths", "is_file_copyable"]
 
 
 # Local IP Address
@@ -36,7 +39,25 @@ def get_local_ip_address():
     return ip
 
 
+# QR Code Utility
+
+
+def qr_code(url):
+    r"""Generate QR Code from URL and print it.
+
+    Parameters
+    ----------
+    url : str
+        URL to create the QR Code for.
+    """
+    qr = QRCode.getMinimumQRCode(url, ErrorCorrectLevel.M)
+    qr.setErrorCorrectLevel(ErrorCorrectLevel.M)
+    qr.make()
+    qr.printQr()
+
+
 # Zeroconf Utilities
+
 
 def get_service_info(code):
     r"""Get service information for an Airshare service.
