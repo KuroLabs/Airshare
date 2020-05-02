@@ -43,6 +43,13 @@ def get_local_ip_address():
 
 
 def qr_code(url):
+    r"""Generate QR Code from URL and print it.
+
+    Parameters
+    ----------
+    url : str
+        URL to create the QR Code for.
+    """
     qr = QRCode.getMinimumQRCode(url, ErrorCorrectLevel.M)
     qr.setErrorCorrectLevel(ErrorCorrectLevel.M)
     qr.make()
