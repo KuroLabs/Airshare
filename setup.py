@@ -33,6 +33,7 @@ setuptools.setup(
         "aiohttp >= 3.6.2",
         "asyncio >= 3.4.3",
         "click >= 7.0",
+        "colorama >= 0.4.3",
         "humanize >= 0.5.1",
         "pyperclip >= 1.8.0",
         "requests >= 2.20.0",

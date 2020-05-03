@@ -1,11 +1,12 @@
 aiohttp==3.6.2
 asyncio==3.4.3
+colorama==0.4.3
 click==7.0
 humanize==0.5.1
 pyperclip==1.8.0
-pyqrcode==1.2.1
 requests==2.20.0
 requests-toolbelt==0.9.1
+termcolor==1.1.0
 tqdm==4.36.1
 zeroconf==0.25.0
 sphinxcontrib-fulltoc==1.2.0
