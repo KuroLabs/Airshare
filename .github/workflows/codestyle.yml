@@ -1,20 +1,31 @@
 # This workflow checks the code style with flake8
 
-name: Flake8 Code Style Check
+name: Flake8 Checker
 
-on: [pull_request]
+on:
+  push:
+    paths:
+      - '*.py'
+  pull_request:
+    paths:
+      - '*.py'
 
 jobs:
-  lint:
+  flake8:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v1
-      - uses: grantmcconnaughey/lintly-flake8-github-action@v1.0
+      - name: Setup Python
+        uses: actions/setup-python@v1
         with:
-          # The GitHub API token to create reviews with
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # Fail if "new" violations detected or "any", default "new"
-          failIf: "any"
-          # Additional arguments to pass to flake8, default "." (current directory)
-          args: "."
+          python-version: 3.7.4
+          architecture: x64
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run flake8
+        uses: suo/flake8-github-action@releases/v1
+        with:
+          checkName: 'flake8'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
