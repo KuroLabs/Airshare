@@ -6,11 +6,16 @@ http://www.opensource.org/licenses/mit-license.php
 The word 'QR Code' is registered trademark of
 DENSO WAVE INCORPORATED
 http://www.denso-wave.com/qrcode/faqpatent-e.html
-Modified by Airshare Developers: added printQr()
+Modified by Airshare Developers: added 
+printQr()
 """
 
 
-from termcolor import colored
+import colorama
+from termcolor import colored, cprint
+
+
+colorama.init()
 
 
 class QRCode:
@@ -57,17 +62,17 @@ class QRCode:
         return self.moduleCount
 
     def printQr(self):
-        WHITE = colored("  ", "white", attrs=["reverse", "blink"])
+        WHITE = colored("  ", "white", "on_white")
         BLACK = "  "
         size = self.getModuleCount() + 2
         print()
         for row in range(size):
             for col in range(size):
                 if row == 0 or col == 0 or col == size - 1 or row == size - 1:
-                    print(WHITE, end="")
+                    cprint(WHITE, end="")
                 else:
                     color = BLACK if self.isDark(row - 1, col - 1) else WHITE
-                    print(color, end="")
+                    cprint(color, end="")
             print()
         print()
 
