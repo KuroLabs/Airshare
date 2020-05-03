@@ -97,7 +97,7 @@ Known Issues
 * Link-local Name Resolution (for the ``.local`` addresses) on non-Apple devices requires Avahi (on Linux) or Bonjour (on Windows). Chances are you already have them, but if you don't, do check the web on how to install them.
 * Link-local Name Resolution, for example, ``http://noobmaster.local``, does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery.
 * Multiple progress bars for concurrent file uploads using ``tqdm`` may not work as intended on some terminals, refer to the ``tqdm`` documentation for more details.
-
+* Using ``Ctrl`` + ``C`` on Windows, with Python < 3.8, does not terminate the ``asyncio`` event loop. Use ``Ctrl`` + ``Break`` instead. If you do not have a ``Break`` or ``Pause`` key, some other combinations may work including ``Ctrl`` + ``Fn`` + ``B`` (check the web for solutions).
 
 Contributing
 ------------

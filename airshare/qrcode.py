@@ -6,8 +6,8 @@ http://www.opensource.org/licenses/mit-license.php
 The word 'QR Code' is registered trademark of
 DENSO WAVE INCORPORATED
 http://www.denso-wave.com/qrcode/faqpatent-e.html
-Modified by Airshare Developers: added 
-printQr()
+Modified by Airshare Developers:
+  - added `printQr()` to `QRCode`
 """
 
 
