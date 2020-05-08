@@ -12,6 +12,22 @@
 
 <p align="justify"><b>Airshare</b> is a Python-based CLI tool and module that lets you transfer data between two machines in a local network, P2P, using Multicast-DNS. It also opens an HTTP gateway for other non-CLI external interfaces. It works completely offline! Built with aiohttp and zeroconf.</p>
 
+## Features
+
+* Blazing fast content transfer within a local network.
+
+* Lets you transfer plain text, send from or receive into your clipboard.
+
+* Supports transfer of multiple files, directories and large files - content is sent chun$
+
+* Lets you send files whose paths have been copied into the clipboard (more details in th$
+
+* Cross-platform, works on Linux, Windows and Mac (CLI and Web Interface), and also suppo$
+
+* Uses Multicast-DNS service registration and discovery - so you can access content with $
+
+* Can be used as a module in other Python programs.
+
 ## Important Links
 
 Source Code: https://github.com/KuroLabs/Airshare <br>
@@ -66,3 +82,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Acknowledgements
 The Airshare logo was designed by [Siddique](https://dribbble.com/thesideeq).
+
+The Airshare GIF was created by [Anam Saatvik](https://github.com/kalki7).
