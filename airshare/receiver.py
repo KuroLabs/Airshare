@@ -107,6 +107,7 @@ def receive(*, code, decompress=False):
         with requests.get(url + "/download", stream=True) as r:
             r.raise_for_status()
             header = r.headers["content-disposition"]
+            decompress = r.headers["compress-airshare"] if not decompress else decompress
             file_name = header.split("; ")[1].split("=")[1]
             file_path = os.getcwd() + os.path.sep + file_name
             file_size = int(header.split("=")[-1])

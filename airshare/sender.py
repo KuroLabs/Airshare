@@ -65,6 +65,7 @@ async def _file_stream_sender(request):
     response.headers["content-type"] = "application/octet-stream"
     response.headers["content-length"] = str(request.app["file_size"])
     response.headers["content-disposition"] = header
+    response.headers["compress-airshare"] = request.app["compress"]
     await response.prepare(request)
     with open(file_path, "rb") as f:
         chunk = f.read(8192)
@@ -196,6 +197,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
         app["file_path"] = os.path.realpath(content)
         app["file_name"] = name or app["file_path"].split(os.path.sep)[-1]
         app["file_size"] = os.stat(app["file_path"]).st_size
+        app["compress"] = compress
         file_size = " (" + humanize.naturalsize(app["file_size"]) + ")"
         content = app["file_name"]
         app.router.add_get(path="/", handler=_download_page)
