@@ -38,6 +38,9 @@ async def _uploaded_file_receiver(request):
     """Receives an uploaded file. POST handler for '/upload'."""
     global _tqdm_position
     _tqdm_position += 1
+    decompress = request.app["decompress"]
+    if request.headers["airshare-compress"] == "true":
+        decompress = True
     reader = await request.multipart()
     field = await reader.next()
     file_name = field.filename
@@ -57,7 +60,7 @@ async def _uploaded_file_receiver(request):
             bar.total += len(chunk)
             f.write(chunk)
             bar.update(len(chunk))
-    if is_zipfile(file_path) and request.app["decompress"] == "True":
+    if is_zipfile(file_path) and decompress:
         unzip_file(file_path)
         os.remove(file_path)
     file_name = field.filename
@@ -107,6 +110,8 @@ def receive(*, code, decompress=False):
         with requests.get(url + "/download", stream=True) as r:
             r.raise_for_status()
             header = r.headers["content-disposition"]
+            if r.headers["compress-airshare"] == "true":
+                decompress = True
             file_name = header.split("; ")[1].split("=")[1]
             file_path = os.getcwd() + os.path.sep + file_name
             file_size = int(header.split("=")[-1])
@@ -151,7 +156,7 @@ def receive_server(*, code, decompress=False, port=80):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     app = web.Application()
-    app["decompress"] = str(decompress)
+    app["decompress"] = decompress
     app.router.add_get(path="/", handler=_upload_page)
     app.router.add_get(path="/airshare", handler=_is_airshare_upload_receiver)
     app.router.add_post(path="/upload", handler=_uploaded_file_receiver)
