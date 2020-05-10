@@ -68,19 +68,24 @@ You can also `import airshare` in any Python program. Visit the documentation fo
 
 * Link-local Name Resolution (for the `.local` addresses) on non-Apple devices requires Avahi (on Linux) or Bonjour (on Windows). Chances are you already have them, but if you don't, do check the web on how to install them.
 
-* Link-local Name Resolution does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery.
+* Link-local Name Resolution does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery. For this reason, we included QR Code support, for you to visit the URLs easily.
+
+* You may have to open up port 80 on your system (in Firewall settings) if not already open - Airshare uses port 80 by default.
 
 * Multiple progress bars for concurrent file uploads using `tqdm` may not work as intended on some terminals, refer to the `tqdm` documentation for more details.
 
 * Using `Ctrl` + `C` on Windows, with Python < 3.8, does not terminate the `asyncio` event loop. Use `Ctrl` + `Break` instead. If you do not have a `Break` or `Pause` key, some other combinations may work including `Ctrl` + `Fn` + `B` (check the web for solutions).
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
+
 [MIT](https://github.com/KuroLabs/Airshare/blob/master/LICENSE.md) - Copyright (c) 2020 [Kandavel A](http://github.com/AK5123), [Mohanasundar M](https://github.com/mohanpierce99), [Nanda H Krishna](https://github.com/nandahkrishna)
 
 ## Acknowledgements
+
 The Airshare logo was designed by [Siddique](https://dribbble.com/thesideeq).
 
 The Airshare GIF was created by [Anam Saatvik](https://github.com/kalki7).

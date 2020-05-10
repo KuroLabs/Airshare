@@ -4,7 +4,8 @@
 import click
 import os
 import pyperclip
-
+import signal
+import sys
 
 from .utils import is_file_copyable, get_clipboard_paths
 from .sender import send, send_server
@@ -41,6 +42,7 @@ def main(code, port, text, upload, clip_send, clip_receive, file_path, files):
 
     FILES - File(s) or directories to send.
     """
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     files = get_clipboard_paths() if file_path else files
     if text:
         try:
