@@ -9,6 +9,9 @@
   <a href="https://pypi.org/project/Airshare">
     <img alt="PyPI" src="https://img.shields.io/pypi/v/Airshare" />
   </a>
+   <a href="https://pypi.org/project/Airshare">
+    <img alt="PyPI" src="https://static.pepy.tech/badge/airshare" />
+  </a>
   <a href="https://pypi.org/project/Airshare">
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/Airshare" />
   </a>
