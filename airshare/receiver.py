@@ -22,7 +22,7 @@ from .utils import get_local_ip_address, get_service_info, qr_code, \
 __all__ = ["receive", "receive_server", "receive_server_proc"]
 
 
-_tqdm_position = -1
+progress_queue = None
 
 
 # Request handlers
@@ -36,8 +36,9 @@ async def _upload_page(request):
 
 async def _uploaded_file_receiver(request):
     """Receives an uploaded file. POST handler for '/upload'."""
-    global _tqdm_position
-    _tqdm_position += 1
+    global progress_queue
+    _tqdm_position = await progress_queue.get()
+    total = 0
     reader = await request.multipart()
     field = await reader.next()
     file_name = field.filename
@@ -47,21 +48,22 @@ async def _uploaded_file_receiver(request):
         file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
         file_path = os.getcwd() + os.path.sep + file_name
     desc = "Downloading `" + file_name + "`"
-    bar = tqdm(desc=desc, total=0, unit="B", unit_scale=1,
-               position=_tqdm_position)
+    bar = tqdm(desc=desc, total=None, unit = "KB",
+               position=_tqdm_position, leave=False)
     with open(file_path, "wb") as f:
         while True:
             chunk = await field.read_chunk()
             if not chunk:
                 break
-            bar.total += len(chunk)
+            total += len(chunk)
             f.write(chunk)
-            bar.update(len(chunk))
+            bar.update(len(chunk)/1024)
+    await progress_queue.put(_tqdm_position)        
     if is_zipfile(file_path) and request.app["decompress"] == "True":
         unzip_file(file_path)
         os.remove(file_path)
     file_name = field.filename
-    file_size = humanize.naturalsize(bar.total)
+    file_size = humanize.naturalsize(total)
     text = "{} ({}) successfully received!".format(file_name, file_size)
     return web.Response(text=text)
 
@@ -146,6 +148,7 @@ def receive_server(*, code, decompress=False, port=80):
     info = get_service_info(code)
     if info is not None:
         raise CodeExistsError(code)
+    global progress_queue
     addresses = [get_local_ip_address()]
     register_service(code, addresses, port)
     loop = asyncio.new_event_loop()
@@ -157,6 +160,9 @@ def receive_server(*, code, decompress=False, port=80):
     app.router.add_post(path="/upload", handler=_uploaded_file_receiver)
     runner = web.AppRunner(app)
     loop.run_until_complete(runner.setup())
+    progress_queue = asyncio.Queue(loop=loop)
+    for pos in range(1,6):
+        progress_queue.put_nowait(pos)
     site = web.TCPSite(runner, "0.0.0.0", str(port))
     loop.run_until_complete(site.start())
     url_port = ""
