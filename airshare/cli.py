@@ -4,7 +4,7 @@
 import click
 import os
 import pyperclip
-
+import signal
 
 from .utils import is_file_copyable, get_clipboard_paths
 from .sender import send, send_server
@@ -35,12 +35,15 @@ Send files whose paths have been copied to the clipoard.
 @click.help_option()
 @click.version_option(version=None, prog_name="Airshare")
 def main(code, port, text, upload, clip_send, clip_receive, file_path, files):
+    
     r"""Airshare - an easy way to share content in a local network.
 
     CODE - An identifying code for Airshare.
 
     FILES - File(s) or directories to send.
     """
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    
     files = get_clipboard_paths() if file_path else files
     if text:
         try:
