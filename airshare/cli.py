@@ -7,6 +7,7 @@ import pyperclip
 import signal
 import sys
 
+
 from .utils import is_file_copyable, get_clipboard_paths
 from .sender import send, send_server
 from .receiver import receive, receive_server
