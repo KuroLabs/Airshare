@@ -39,6 +39,9 @@ async def _uploaded_file_receiver(request):
     global progress_queue
     _tqdm_position = await progress_queue.get()
     total = 0
+    decompress = request.app["decompress"]
+    if request.headers["airshare-compress"] == "true":
+        decompress = True
     reader = await request.multipart()
     field = await reader.next()
     file_name = field.filename
@@ -48,7 +51,7 @@ async def _uploaded_file_receiver(request):
         file_name = file_name + "-" + strftime("%Y%m%d%H%M%S") + file_ext
         file_path = os.getcwd() + os.path.sep + file_name
     desc = "Downloading `" + file_name + "`"
-    bar = tqdm(desc=desc, total=None, unit = "KB",
+    bar = tqdm(desc=desc, total=None, unit = "B", unit_scale=1,
                position=_tqdm_position, leave=False)
     with open(file_path, "wb") as f:
         while True:
@@ -57,11 +60,14 @@ async def _uploaded_file_receiver(request):
                 break
             total += len(chunk)
             f.write(chunk)
-            bar.update(len(chunk)/1024)
-    await progress_queue.put(_tqdm_position)        
-    if is_zipfile(file_path) and request.app["decompress"] == "True":
+            bar.update(len(chunk))
+    await progress_queue.put(_tqdm_position)
+    if is_zipfile(file_path) and decompress:
+        tqdm.write("Downloaded and decompressed " + file_name + "!")
         unzip_file(file_path)
         os.remove(file_path)
+    else:
+        tqdm.write("Downloaded " + file_name + "!")
     file_name = field.filename
     file_size = humanize.naturalsize(total)
     text = "{} ({}) successfully received!".format(file_name, file_size)
@@ -109,6 +115,8 @@ def receive(*, code, decompress=False):
         with requests.get(url + "/download", stream=True) as r:
             r.raise_for_status()
             header = r.headers["content-disposition"]
+            if r.headers["compress-airshare"] == "true":
+                decompress = True
             file_name = header.split("; ")[1].split("=")[1]
             file_path = os.getcwd() + os.path.sep + file_name
             file_size = int(header.split("=")[-1])
@@ -154,7 +162,7 @@ def receive_server(*, code, decompress=False, port=80):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     app = web.Application()
-    app["decompress"] = str(decompress)
+    app["decompress"] = decompress
     app.router.add_get(path="/", handler=_upload_page)
     app.router.add_get(path="/airshare", handler=_is_airshare_upload_receiver)
     app.router.add_post(path="/upload", handler=_uploaded_file_receiver)
