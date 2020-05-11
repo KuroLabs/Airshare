@@ -36,7 +36,9 @@ async def _uploaded_file_receiver(request):
     progress_queue = request.app["progress_queue"]
     tqdm_position = await progress_queue.get()
     decompress = request.app["decompress"]
-    if request.headers["airshare-compress"] == "true":
+    compress_header = request.headers.get("airshare-compress") \
+                      or "false"
+    if compress_header == "true":
         decompress = True
     total = 0
     reader = await request.multipart()
@@ -112,7 +114,9 @@ def receive(*, code, decompress=False):
         with requests.get(url + "/download", stream=True) as r:
             r.raise_for_status()
             header = r.headers["content-disposition"]
-            if r.headers["airshare-compress"] == "true":
+            compress_header = r.headers.get("airshare-compress") \
+                              or "false"
+            if compress == "true":
                 decompress = True
             file_name = header.split("; ")[1].split("=")[1] \
                               .replace("'", "")
