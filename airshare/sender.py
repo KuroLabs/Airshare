@@ -7,9 +7,11 @@ import humanize
 from multiprocessing import Process
 import os
 import pkgutil
+import platform
 import requests
 from requests_toolbelt import MultipartEncoder
 import socket
+import sys
 
 
 from .exception import CodeExistsError, CodeNotFoundError, IsNotReceiverError
@@ -215,9 +217,11 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     if port != 80:
         url_port = ":" + str(port)
     ip = socket.inet_ntoa(addresses[0]) + url_port
+    quit_msg = "`, press Ctrl+C to stop sharing..."
+    if platform.system() == "Windows" and sys.version_info < (3, 8):
+        quit_msg = "`, press Ctrl+Break to stop sharing..."
     print("`" + content + "`" + file_size + " available at " + ip
-          + " and `http://" + code + ".local" + url_port + "`, press CtrlC"
-          + " to stop sharing...")
+          + " and `http://" + code + ".local" + url_port + quit_msg)
     qr_code("http://" + ip)
     loop.run_forever()
 

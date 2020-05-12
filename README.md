@@ -91,6 +91,8 @@ You can also `import airshare` in any Python program. Visit the documentation fo
 
 * Multiple progress bars for concurrent file uploads using `tqdm` may not work as intended on some terminals, refer to the `tqdm` documentation for more details.
 
+* Windows users with Python < 3.8, use <kbd>Ctrl</kbd> + <kbd>Break</kbd> to quit, as <kbd>Ctrl</kbd> + <kbd>C</kbd> will not work. This is a known issue with `asyncio`, which has been fixed in Python 3.8. If you do not have a <kbd>Break</kbd> key, try using <kbd>Ctrl</kbd> + <kbd>Fn</kbd> + <kbd>B</kbd>, or check the web for other alternatives (depending on your PC).
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

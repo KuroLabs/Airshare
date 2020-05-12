@@ -5,6 +5,7 @@ import click
 import os
 import pyperclip
 
+
 from .utils import is_file_copyable, get_clipboard_paths
 from .sender import send, send_server
 from .receiver import receive, receive_server

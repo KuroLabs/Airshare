@@ -7,8 +7,10 @@ import humanize
 from multiprocessing import Process
 import os
 import pkgutil
+import platform
 import requests
 import socket
+import sys
 from time import sleep, strftime
 from tqdm import tqdm
 from zipfile import is_zipfile
@@ -36,8 +38,7 @@ async def _uploaded_file_receiver(request):
     progress_queue = request.app["progress_queue"]
     tqdm_position = await progress_queue.get()
     decompress = request.app["decompress"]
-    compress_header = request.headers.get("airshare-compress") \
-                      or "false"
+    compress_header = request.headers.get("airshare-compress") or "false"
     if compress_header == "true":
         decompress = True
     total = 0
@@ -114,9 +115,8 @@ def receive(*, code, decompress=False):
         with requests.get(url + "/download", stream=True) as r:
             r.raise_for_status()
             header = r.headers["content-disposition"]
-            compress_header = r.headers.get("airshare-compress") \
-                              or "false"
-            if compress == "true":
+            compress_header = r.headers.get("airshare-compress") or "false"
+            if compress_header == "true":
                 decompress = True
             file_name = header.split("; ")[1].split("=")[1] \
                               .replace("'", "")
@@ -180,8 +180,11 @@ def receive_server(*, code, decompress=False, port=80):
     if port != 80:
         url_port = ":" + str(port)
     ip = socket.inet_ntoa(addresses[0]) + url_port
+    quit_msg = "`, press Ctrl+C to stop receiving..."
+    if platform.system() == "Windows" and sys.version_info < (3, 8):
+        quit_msg = "`, press Ctrl+Break to stop receiving..."
     print("Waiting for uploaded files at " + ip + " and `http://"
-          + code + ".local" + url_port + "`, press CtrlC to stop receiving...")
+          + code + ".local" + url_port + quit_msg)
     qr_code("http://" + ip)
     if decompress:
         print("Note: Any Zip Archives will be decompressed!")
