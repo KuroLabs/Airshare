@@ -9,6 +9,8 @@ on:
   pull_request:
     paths:
       - '*.py'
+      - 'airshare/*.py'
+      - 'docs/source/conf.py'
 
 jobs:
   flake8:
@@ -17,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7.6
+          python-version: 3.8
           architecture: x64
       - name: Checkout
         uses: actions/checkout@master
