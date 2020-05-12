@@ -107,8 +107,6 @@ Known Issues
 
 * Link-local Name Resolution (for the ``.local`` addresses) on non-Apple devices requires Avahi (on Linux) or Bonjour (on Windows). Chances are you already have them, but if you don't, do check the web on how to install them.
 * Link-local Name Resolution does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery. For this reason, we included QR Code support, for you to visit the URLs easily.
-* You may have to open up port 80 on your system (in Firewall settings) if not already open - Airshare uses port 80 by default.
-* Multiple progress bars for concurrent file uploads using ``tqdm`` may not work as intended on some terminals, refer to the ``tqdm`` documentation for more details.
 * Windows users with Python < 3.8, use ``Ctrl`` + ``Break`` to quit, as ``Ctrl`` + ``C`` will not work. This is a known issue with ``asyncio``, which has been fixed in Python 3.8. If you do not have a ``Break`` key, try using ``Ctrl`` + ``Fn`` + ``B``, or check the web for other alternatives (depending on your PC).
 
 Contributing
