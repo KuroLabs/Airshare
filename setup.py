@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.1.3",
     author="Kandavel A, Mohanasundar M, Nanda H Krishna",
     author_email="kurolabs.org+airshare@gmail.com",
-    description="An easy way to share content in a local network.",
+    description="Cross-platform content sharing in a local network.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/KuroLabs/airshare",
