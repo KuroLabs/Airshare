@@ -63,7 +63,8 @@ async def _file_stream_sender(request):
     file_path = request.app["file_path"]
     file_name = request.app["file_name"]
     file_size = str(request.app["file_size"])
-    header = "attachment; filename=\"{}\"; size={}".format(file_name, file_size)
+    header = "attachment; filename=\"{}\"; size={}" \
+             .format(file_name, file_size)
     response.headers["content-type"] = "application/octet-stream"
     response.headers["content-length"] = str(request.app["file_size"])
     response.headers["content-disposition"] = header
