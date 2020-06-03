@@ -25,7 +25,7 @@
 
 <h4 align="center">Cross-platform content sharing in a local network.</h4>
 
-<p align="justify"><b>Airshare</b> is a Python-based CLI tool and module that lets you transfer data between two machines in a local network, P2P, using Multicast-DNS. It also opens an HTTP gateway for other non-CLI external interfaces. It works completely offline! Built with aiohttp and zeroconf.</p>
+<p align="justify"><b>Airshare</b> is a Python-based CLI tool and module that lets you transfer data between two machines in a local network, P2P, using Multicast-DNS. It also opens an HTTP gateway for other non-CLI external interfaces. It works completely offline! Built with aiohttp and zeroconf. Checkout the <a href="https://www.youtube.com/watch?v=iJH6bkLRdSw">demo</a>.</p>
 
 ## Features
 
