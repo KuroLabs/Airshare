@@ -1,1 +1,3 @@
 recursive-include airshare *
+include PIP.md
+include LICENSE.md
