@@ -54,10 +54,22 @@ PyPI: https://pypi.org/project/Airshare <br>
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Airshare.
+### [pip](https://pip.pypa.io/en/stable/)
 
 ```bash
 $ pip install Airshare
+```
+
+### [pipx](https://pipxproject.github.io/pipx/)
+
+```bash
+$ pipx install Airshare
+```
+
+### [Homebrew](https://brew.sh)
+
+```bash
+$ brew install airshare
 ```
 
 If you have a non-Apple device, consider installing Avahi (for Linux) or Bonjour (for Windows) if you'd like to use Link-local Name Resolution (for the `.local` addresses).
