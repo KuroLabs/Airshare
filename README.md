@@ -66,6 +66,12 @@ $ pip install Airshare
 $ pipx install Airshare
 ```
 
+### [Homebrew](https://brew.sh)
+
+```bash
+$ brew install airshare
+```
+
 If you have a non-Apple device, consider installing Avahi (for Linux) or Bonjour (for Windows) if you'd like to use Link-local Name Resolution (for the `.local` addresses).
 
 ## Example
