@@ -101,7 +101,7 @@ You can also `import airshare` in any Python program. Visit the documentation fo
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! Read our [Contribution Guide](https://github.com/KuroLabs/Airshare/blob/master/CONTRIBUTING.md) for more details.
 
 ## License
 
