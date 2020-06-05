@@ -72,8 +72,6 @@ $ pipx install Airshare
 $ brew install airshare
 ```
 
-If you have a non-Apple device, consider installing Avahi (for Linux) or Bonjour (for Windows) if you'd like to use Link-local Name Resolution (for the `.local` addresses).
-
 ## Example
 
 Send and receive files and directories.
@@ -97,7 +95,7 @@ You can also `import airshare` in any Python program. Visit the documentation fo
 
 * Link-local Name Resolution (for the `.local` addresses) on non-Apple devices requires Avahi (on Linux) or Bonjour (on Windows). Chances are you already have them, but if you don't, do check the web on how to install them.
 
-* Link-local Name Resolution does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery. For this reason, we included QR Code support, for you to visit the URLs easily.
+* Android browsers do not have inbuilt Multicast-DNS service discovery, and cannot resolve the `.local` addresses. For this reason, we included QR Code support, for you to visit the URLs easily.
 
 * Windows users with Python < 3.8, use <kbd>Ctrl</kbd> + <kbd>Break</kbd> to quit, as <kbd>Ctrl</kbd> + <kbd>C</kbd> will not work. This is a known issue with `asyncio`, which has been fixed in Python 3.8. If you do not have a <kbd>Break</kbd> key, try using <kbd>Ctrl</kbd> + <kbd>Fn</kbd> + <kbd>B</kbd>, or check the web for other alternatives (depending on your PC).
 
