@@ -87,7 +87,7 @@ To receive using the CLI,
 $ airshare noobmaster
 ```
 
-or visit `http://noobmaster.local` in the browser to download.
+or visit `http://noobmaster.local:8000` in the browser to download.
 
 You can also `import airshare` in any Python program. Visit the documentation for detailed usage instructions.
 

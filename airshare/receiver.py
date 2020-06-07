@@ -105,7 +105,7 @@ def receive(*, code, decompress=False):
     airshare_type = requests.get(url + "/airshare").text
     if "Sender" not in airshare_type:
         raise IsNotSenderError(code)
-    print("Receiving from Airshare `" + code + ".local`...")
+    print("Receiving from Airshare `" + code + "`...")
     sleep(2)
     if airshare_type == "Text Sender":
         text = requests.get(url + "/text").text
@@ -145,7 +145,7 @@ def receive(*, code, decompress=False):
             return file_path
 
 
-def receive_server(*, code, decompress=False, port=80):
+def receive_server(*, code, decompress=False, port=8000):
     r"""Serves a file receiver and registers it as a Multicast-DNS service.
 
     Parameters
@@ -154,7 +154,7 @@ def receive_server(*, code, decompress=False, port=80):
         Identifying code for the Airshare service and server.
     decompress : boolean, default=False
         Flag to enable or disable decompression (Zip).
-    port : int, default=80
+    port : int, default=8000
         Port number at which the server is hosted on the device.
     """
     info = get_service_info(code)
@@ -191,7 +191,7 @@ def receive_server(*, code, decompress=False, port=80):
     loop.run_forever()
 
 
-def receive_server_proc(*, code, decompress=False, port=80):
+def receive_server_proc(*, code, decompress=False, port=8000):
     r"""Creates a process with 'receive_server' as the target.
 
     Parameters
@@ -200,7 +200,7 @@ def receive_server_proc(*, code, decompress=False, port=80):
         Identifying code for the Airshare service and server.
     decompress : boolean, default=False
         Flag to enable or disable decompression (Zip).
-    port : int, default=80
+    port : int, default=8000
         Port number at which the server is hosted on the device.
 
     Returns

@@ -13,8 +13,8 @@ from .receiver import receive, receive_server
 
 @click.command(name="airshare")
 @click.argument("code", nargs=1)
-@click.option("-p", "--port", type=int, default=80, help="""
-Specify the port number to host a sending or receiving server (defaults to 80).
+@click.option("-p", "--port", type=int, default=8000, help="""
+Specify the port number to host a sending or receiving server (default 8000).
 """)
 @click.option("-t", "--text", type=str, help="""
 Send (serve) text content. For multiple words, enclose within quotes.

@@ -9,7 +9,7 @@ Usage: airshare [OPTIONS] CODE [FILES]
 Options:
 
   -p, --port INTEGER   Specify the port number to host a sending or receiving
-                       server (defaults to 80).
+                       server (default 8000).
  
   -t, --text TEXT      Send (serve) text content. For multiple words, enclose
                        within quotes.

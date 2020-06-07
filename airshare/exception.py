@@ -20,7 +20,7 @@ class CodeExistsError(AirshareError):
 
     def __str__(self):
         return "CodeExistsError: The Airshare `" + self.code \
-               + ".local` already exists!"
+               + "` already exists!"
 
 
 class CodeNotFoundError(AirshareError):
@@ -34,7 +34,7 @@ class CodeNotFoundError(AirshareError):
 
     def __str__(self):
         return "CodeNotFoundError: The Airshare `" + self.code \
-               + ".local` was not found!"
+               + "` was not found!"
 
 
 class IsNotReceiverError(AirshareError):
@@ -48,7 +48,7 @@ class IsNotReceiverError(AirshareError):
 
     def __str__(self):
         return "IsNotReceiverError: The Airshare `" + self.code \
-               + ".local` is not an Upload Receiver!"
+               + "` is not an Upload Receiver!"
 
 
 class IsNotSenderError(AirshareError):
@@ -62,4 +62,4 @@ class IsNotSenderError(AirshareError):
 
     def __str__(self):
         return "IsNotSenderError: The Airshare `" + self.code \
-               + ".local` is not a Text or File Sender!"
+               + "` is not a Text or File Sender!"

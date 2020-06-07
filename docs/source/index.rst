@@ -69,14 +69,23 @@ Important Links
 Installation
 ------------
 
-Use the package manager `pip <https://pip.pypa.io/en/stable/>`__ to
-install Airshare.
+* Installation using ``pip``
 
 .. code:: bash
 
    $ pip install Airshare
 
-If you have a non-Apple device, consider installing Avahi (for Linux) or Bonjour (for Windows) if you'd like to use Link-local Name Resolution (for the ``.local`` addresses).
+* Installation using ``pipx``
+
+.. code:: bash
+
+   $ pipx install Airshare
+
+* Installation using Homebrew
+
+.. code:: bash
+
+   $ brew install airshare
 
 CLI Tool Reference
 ------------------
@@ -106,14 +115,13 @@ Known Issues
 ------------
 
 * Link-local Name Resolution (for the ``.local`` addresses) on non-Apple devices requires Avahi (on Linux) or Bonjour (on Windows). Chances are you already have them, but if you don't, do check the web on how to install them.
-* Link-local Name Resolution does not work on Android phones. This is because Android browsers do not have inbuilt Multicast-DNS service discovery. For this reason, we included QR Code support, for you to visit the URLs easily.
+* Android browsers do not have inbuilt Multicast-DNS service discovery, and cannot resolve the ``.local`` addresses. For this reason, we included QR Code support, for you to visit the URLs easily.
 * Windows users with Python < 3.8, use ``Ctrl`` + ``Break`` to quit, as ``Ctrl`` + ``C`` will not work. This is a known issue with ``asyncio``, which has been fixed in Python 3.8. If you do not have a ``Break`` key, try using ``Ctrl`` + ``Fn`` + ``B``, or check the web for other alternatives (depending on your PC).
 
 Contributing
 ------------
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
+Pull requests are welcome. Read our `Contribution Guide <https://github.com/KuroLabs/Airshare/blob/master/CONTRIBUTING.md>`__ for more details.
 
 License
 -------

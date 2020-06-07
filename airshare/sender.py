@@ -138,11 +138,11 @@ def send(*, code, file, compress=False):
     m = MultipartEncoder(fields={"field0": (name, open(file, "rb"))})
     headers = {"content-type": m.content_type, "airshare-compress": compress}
     r = requests.post(url + "/upload", data=m, headers=headers)
-    print("Uploaded `" + name + "` to Airshare `" + code + ".local`!")
+    print("Uploaded `" + name + "` to Airshare `" + code + "`!")
     return r.status_code
 
 
-def send_server(*, code, text=None, file=None, compress=False, port=80):
+def send_server(*, code, text=None, file=None, compress=False, port=8000):
     r"""Serves a file or text and registers it as a Multicast-DNS service.
 
     Parameters
@@ -161,7 +161,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     compress : boolean, default=False
         Flag to enable or disable compression (Zip).
         Effective when only one file is given.
-    port : int, default=80
+    port : int, default=8000
         Port number at which the server is hosted on the device.
     """
     info = get_service_info(code)
@@ -227,7 +227,7 @@ def send_server(*, code, text=None, file=None, compress=False, port=80):
     loop.run_forever()
 
 
-def send_server_proc(*, code, text=None, file=None, compress=False, port=80):
+def send_server_proc(*, code, text=None, file=None, compress=False, port=8000):
     r"""Creates a process with 'send_server' as the target.
 
     Parameters
@@ -246,7 +246,7 @@ def send_server_proc(*, code, text=None, file=None, compress=False, port=80):
     compress : boolean, default=False
         Flag to enable or disable compression (Zip).
         Effective when only one file is given.
-    port : int, default=80
+    port : int, default=8000
         Port number at which the server is hosted on the device.
 
     Returns
