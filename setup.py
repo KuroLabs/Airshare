@@ -5,7 +5,7 @@ with open("PIP.md", "r") as f:
 
 setuptools.setup(
     name="Airshare",
-    version="0.1.5",
+    version="0.1.6",
     author="Kandavel A, Mohanasundar M, Nanda H Krishna",
     author_email="kurolabs.org+airshare@gmail.com",
     description="Cross-platform content sharing in a local network.",
