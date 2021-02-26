@@ -1,4 +1,4 @@
-aiohttp==3.6.2
+aiohttp==3.7.4
 asyncio==3.4.3
 colorama==0.4.3
 click==7.0
